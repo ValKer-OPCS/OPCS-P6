@@ -1,0 +1,48 @@
+section {
+	margin: 50px 0;
+}
+
+#introduction {
+	display: flex;
+	align-items: center;
+
+	figure {
+		flex: 1;
+		img {
+			display: block;
+			margin: auto;
+			width: 80%;
+		}
+	}
+
+	article {
+		flex: 1;
+
+		h2 {
+			margin-bottom: 1em;
+		}
+
+		p {
+			margin-bottom: 0.5em;
+		}
+	}
+}
+
+#portfolio {
+	h2 {
+		text-align: center;
+		margin-bottom: 1em;
+	}
+}
+
+.gallery {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+
+	img {
+		width: 100%;
+	}
+}
