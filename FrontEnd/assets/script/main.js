@@ -8,7 +8,7 @@ import  {getWorksInit} from "./modules/getWorks.js";
  * @returns {Promise<void>}
  */
 async function init() {
-    getWorksInit()
+    getWorksInit('works', '.gallery')
 }
 
 
