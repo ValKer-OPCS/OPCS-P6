@@ -1,7 +1,7 @@
 export function clearHTMLElement(elementToClear){
-    const el = document.querySelector(elementToClear);
-    if (el) {
-        el.innerHTML = "";
+    const element = document.querySelector(elementToClear);
+    if (element) {
+        element.innerHTML = "";
     } else {
         console.warn(`Aucun élément trouvé pour le sélecteur "${elementToClear}"`);
     }
