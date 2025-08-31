@@ -9,9 +9,9 @@ import { getFrom } from "./fetcher.js";
  * @function worksInit
  * @returns {Promise<void>} Resolves when works have been fetched and displayed.
  */
-export async function getWorksInit() {
-    const fetchedWorks = await getFrom('works');
-    displayWorks(fetchedWorks, '.gallery');
+export async function getWorksInit(endpoint, elementId) {
+    const fetchedWorks = await getFrom(endpoint);
+    displayWorks(fetchedWorks, elementId);
 }
 
 
