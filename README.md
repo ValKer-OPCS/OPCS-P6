@@ -40,6 +40,19 @@ Fully **Front-End development** using HTML, CSS, and JavaScript.
 
 ---
 
+## 🚀 Starting the Node.js Server
+
+To start the back-end of the application:
+
+1. Make sure **Node.js** and **npm** are installed.  
+2. At the root of your project, double-click the `start-backend.bat` file.  
+3. A console window will open and automatically run `npm start` inside the `backend` folder.  
+4. The server will start and be ready to handle requests.
+
+> 💡 Tip: Keep the console open to monitor server logs and messages.
+
+---
+
 ## 🛠️ Project Steps
 
 ### Step 1-1: Fetching projects from the back-end
