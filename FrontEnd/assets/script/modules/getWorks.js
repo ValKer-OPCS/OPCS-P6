@@ -1,57 +1,35 @@
-import  {clearHTMLElement} from "./utils.js";
+import { clearHTMLElement } from "./utils.js";
+import { getFrom } from "./fetcher.js";
+
 
 /**
- * Fetches the list of works from the API.
+ * Initializes the works section by fetching works data and displaying it in the gallery.
+ * 
  * @async
- * @function getWorks
- * @returns {Promise<Array<Object>>} A promise that resolves to an array of work objects.
+ * @function worksInit
+ * @returns {Promise<void>} Resolves when works have been fetched and displayed.
  */
-async function getWorks() {
-    const responseWorks = await fetch('http://127.0.0.1:5678/api/works');
-    const dataWorks = await responseWorks.json();
-    console.log(dataWorks);
-    return dataWorks;
+export async function getWorksInit() {
+    const fetchedWorks = await getFrom('works');
+    displayWorks(fetchedWorks, '.gallery');
 }
 
 
 /**
- * Displays a list of works in the specified DOM element.
- * @function displayWorks
- * @param {Array<Object>} workLocation - Array of work objects to display.
- * @param {string} elementSelection - CSS selector for the target DOM element.
- * @returns {void}
+ * Displays a list of works by creating figure elements with images and captions.
+ *
+ * @param {Array<Object>} workLocation - Array of work objects, each containing `imageUrl` and `title` properties.
+ * @param {string} elementSelection - CSS selector string for the container element where works will be displayed.
  */
 function displayWorks(workLocation, elementSelection) {
 
-    clearHTMLElement('.gallery');
-    const displayLocation = document.querySelector(elementSelection)
+    clearHTMLElement(elementSelection);
+    const displayContainer = document.querySelector(elementSelection)
 
     workLocation.forEach(work => {
         const figure = document.createElement('figure');
-
-        const img = document.createElement('img');
-        img.src = work.imageUrl;
-        img.alt = work.title;
-
-        const figcaption = document.createElement('figcaption');
-        figcaption.textContent = work.title;
-
-        figure.appendChild(img);
-        figure.appendChild(figcaption);
-        displayLocation.appendChild(figure);
+        figure.innerHTML =`<img src="${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption>`;
+        displayContainer.appendChild(figure);
     });
 
 }
-
-
-/**
- * Initializes the works display by fetching data and rendering it.
- * @async
- * @function worksInit
- * @returns {Promise<void>} A promise that resolves when initialization is complete.
- */
-export async function worksInit(){
-    const dataWorks = await getWorks();
-    displayWorks(dataWorks,'.gallery');
-}
-
