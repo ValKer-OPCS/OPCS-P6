@@ -1,4 +1,4 @@
-import  {worksInit} from "./modules/getWorks.js";
+import  {getWorksInit} from "./modules/getWorks.js";
 
 
 /**
