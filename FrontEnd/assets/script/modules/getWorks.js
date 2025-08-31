@@ -1,16 +1,29 @@
 import { clearHTMLElement } from "./utils.js";
 
 /**
+ * Initializes the works display by fetching data and rendering it.
+ * @async
+ * @function worksInit
+ * @returns {Promise<void>} A promise that resolves when initialization is complete.
+ */
+export async function worksInit() {
+    const fetchedWorks = await getWorks();
+    displayWorks(fetchedWorks, '.gallery');
+}
+
+
+
+/**
  * Fetches the list of works from the API.
  * @async
  * @function getWorks
  * @returns {Promise<Array<Object>>} A promise that resolves to an array of work objects.
  */
 async function getWorks() {
-    const responseWorks = await fetch('http://127.0.0.1:5678/api/works');
-    const dataWorks = await responseWorks.json();
-    console.log(dataWorks);
-    return dataWorks;
+    const response = await fetch('http://127.0.0.1:5678/api/works');
+    const data = await response.json();
+    console.log(data);
+    return data;
 }
 
 
@@ -33,16 +46,3 @@ function displayWorks(workLocation, elementSelection) {
     });
 
 }
-
-
-/**
- * Initializes the works display by fetching data and rendering it.
- * @async
- * @function worksInit
- * @returns {Promise<void>} A promise that resolves when initialization is complete.
- */
-export async function worksInit() {
-    const dataWorks = await getWorks();
-    displayWorks(dataWorks, '.gallery');
-}
-
