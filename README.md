@@ -147,3 +147,7 @@ Fully **Front-End development** using HTML, CSS, and JavaScript.
   - Test form behavior with incorrect data.
   - Verify visual conformity with the mockups.
   - Check dynamic DOM updates when adding or deleting elements.
+
+
+## 📋 Project Checklist
+You can check the full interactive checklist here: [TODO.md](TODO.md)
