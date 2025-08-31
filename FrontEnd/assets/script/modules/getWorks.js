@@ -1,3 +1,5 @@
+import  {clearHTMLElement} from "./utils.js";
+
 /**
  * Fetches the list of works from the API.
  * @async
@@ -13,14 +15,17 @@ async function getWorks() {
 
 
 /**
- * Displays the provided works in the gallery section of the DOM.
+ * Displays a list of works in the specified DOM element.
  * @function displayWorks
  * @param {Array<Object>} workLocation - Array of work objects to display.
+ * @param {string} elementSelection - CSS selector for the target DOM element.
  * @returns {void}
  */
-function displayWorks(workLocation) {
-    const divGallery = document.querySelector(".gallery");
-    divGallery.innerHTML = "";
+function displayWorks(workLocation, elementSelection) {
+
+    clearHTMLElement('.gallery');
+    const displayLocation = document.querySelector(elementSelection)
+
     workLocation.forEach(work => {
         const figure = document.createElement('figure');
 
@@ -33,12 +38,20 @@ function displayWorks(workLocation) {
 
         figure.appendChild(img);
         figure.appendChild(figcaption);
-        divGallery.appendChild(figure);
+        displayLocation.appendChild(figure);
     });
 
 }
 
+
+/**
+ * Initializes the works display by fetching data and rendering it.
+ * @async
+ * @function worksInit
+ * @returns {Promise<void>} A promise that resolves when initialization is complete.
+ */
 export async function worksInit(){
     const dataWorks = await getWorks();
-    displayWorks(dataWorks);
+    displayWorks(dataWorks,'.gallery');
 }
+
