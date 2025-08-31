@@ -1,10 +1,10 @@
 # ✅ Interactive Checklist - Dynamic Web Page
 
 ## Step 1: Gallery and Filtering
-- [ ] **1-1: Fetching projects from the back-end**
-  - [ ] Use `fetch` to retrieve projects
-  - [ ] Ensure the gallery displays all projects dynamically
-  - [ ] Remove static projects from the HTML
+- [X] **1-1: Fetching projects from the back-end**
+  - [X] Use `fetch` to retrieve projects
+  - [X] Ensure the gallery displays all projects dynamically
+  - [X] Remove static projects from the HTML
 - [ ] **1-2: Filtering projects by category**
   - [ ] Add a dynamic filter menu
   - [ ] Ensure filtering works correctly
