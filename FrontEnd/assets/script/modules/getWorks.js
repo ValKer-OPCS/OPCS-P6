@@ -1,38 +1,25 @@
 import { clearHTMLElement } from "./utils.js";
+import { getFrom } from "./fetcher.js";
+
 
 /**
- * Initializes the works display by fetching data and rendering it.
+ * Initializes the works section by fetching works data and displaying it in the gallery.
+ * 
  * @async
  * @function worksInit
- * @returns {Promise<void>} A promise that resolves when initialization is complete.
+ * @returns {Promise<void>} Resolves when works have been fetched and displayed.
  */
 export async function worksInit() {
-    const fetchedWorks = await getWorks();
+    const fetchedWorks = await getFrom('works');
     displayWorks(fetchedWorks, '.gallery');
 }
 
 
-
 /**
- * Fetches the list of works from the API.
- * @async
- * @function getWorks
- * @returns {Promise<Array<Object>>} A promise that resolves to an array of work objects.
- */
-async function getWorks() {
-    const response = await fetch('http://127.0.0.1:5678/api/works');
-    const data = await response.json();
-    console.log(data);
-    return data;
-}
-
-
-
-/**
- * Displays a list of works by creating figure elements and appending them to the specified DOM element.
+ * Displays a list of works by creating figure elements with images and captions.
  *
- * @param {Array<Object>} workLocation - An array of work objects, each containing `imageUrl` and `title` properties.
- * @param {string} elementSelection - A CSS selector string for the DOM element where the works will be displayed.
+ * @param {Array<Object>} workLocation - Array of work objects, each containing `imageUrl` and `title` properties.
+ * @param {string} elementSelection - CSS selector string for the container element where works will be displayed.
  */
 function displayWorks(workLocation, elementSelection) {
 
