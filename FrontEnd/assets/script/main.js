@@ -6,6 +6,29 @@ async function getWorks() {
     return dataWorks;
 }
 
+function displayWorks(workLocation) {
+    const divGallery = document.querySelector(".gallery");
+    divGallery.innerHTML = "";
+    workLocation.forEach(work => {
+        const figure = document.createElement('figure');
+
+        const img = document.createElement('img');
+        img.src = work.imageUrl;
+        img.alt = work.title;
+
+        const figcaption = document.createElement('figcaption');
+        figcaption.textContent = work.title;
+
+        figure.appendChild(img);
+        figure.appendChild(figcaption);
+        divGallery.appendChild(figure);
+    });
+
+}
+async function init() {
+    const dataWorks = await getWorks();
+    displayWorks(dataWorks);
+}
 
 
-getWorks()
+init()
