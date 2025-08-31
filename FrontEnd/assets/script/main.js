@@ -8,7 +8,7 @@ import  {worksInit} from "./modules/getWorks.js";
  * @returns {Promise<void>}
  */
 async function init() {
-    worksInit()
+    getWorksInit()
 }
 
 
