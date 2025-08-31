@@ -1,4 +1,4 @@
-import  {clearHTMLElement} from "./utils.js";
+import { clearHTMLElement } from "./utils.js";
 
 /**
  * Fetches the list of works from the API.
@@ -14,31 +14,22 @@ async function getWorks() {
 }
 
 
+
 /**
- * Displays a list of works in the specified DOM element.
- * @function displayWorks
- * @param {Array<Object>} workLocation - Array of work objects to display.
- * @param {string} elementSelection - CSS selector for the target DOM element.
- * @returns {void}
+ * Displays a list of works by creating figure elements and appending them to the specified DOM element.
+ *
+ * @param {Array<Object>} workLocation - An array of work objects, each containing `imageUrl` and `title` properties.
+ * @param {string} elementSelection - A CSS selector string for the DOM element where the works will be displayed.
  */
 function displayWorks(workLocation, elementSelection) {
 
-    clearHTMLElement('.gallery');
-    const displayLocation = document.querySelector(elementSelection)
+    clearHTMLElement(elementSelection);
+    const displayContainer = document.querySelector(elementSelection)
 
     workLocation.forEach(work => {
         const figure = document.createElement('figure');
-
-        const img = document.createElement('img');
-        img.src = work.imageUrl;
-        img.alt = work.title;
-
-        const figcaption = document.createElement('figcaption');
-        figcaption.textContent = work.title;
-
-        figure.appendChild(img);
-        figure.appendChild(figcaption);
-        displayLocation.appendChild(figure);
+        figure.innerHTML =`<img src="${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption>`;
+        displayContainer.appendChild(figure);
     });
 
 }
@@ -50,8 +41,8 @@ function displayWorks(workLocation, elementSelection) {
  * @function worksInit
  * @returns {Promise<void>} A promise that resolves when initialization is complete.
  */
-export async function worksInit(){
+export async function worksInit() {
     const dataWorks = await getWorks();
-    displayWorks(dataWorks,'.gallery');
+    displayWorks(dataWorks, '.gallery');
 }
 
