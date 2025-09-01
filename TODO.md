@@ -5,10 +5,10 @@
   - [X] Use `fetch` to retrieve projects
   - [X] Ensure the gallery displays all projects dynamically
   - [X] Remove static projects from the HTML
-- [ ] **1-2: Filtering projects by category**
-  - [ ] Add a dynamic filter menu
-  - [ ] Ensure filtering works correctly
-  - [ ] Include a "All Projects" option by default
+- [X] **1-2: Filtering projects by category**
+  - [X] Add a dynamic filter menu
+  - [X] Ensure filtering works correctly
+  - [X] Include a "All Projects" option by default
 
 ## Step 2: Login Page and Authentication
 - [ ] **2-1: Integrating the login page design**
