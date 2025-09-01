@@ -5,12 +5,22 @@
 	color: 1D6154;
 	background-color: #fff;
 	text-align: center;
-	border: 1px solid #1D6154;
+	border: 1.5px solid #1D6154;
     color: #1D6154;
 	border-radius: 60px ;
+	height: 37px;
+	min-width: 100px;
 }
 
-.filter-btn-selected{
+.filter-btn-active{
     background-color: #1D6154;
     color: #fff;
+}
+
+.filter-btn-container{
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	justify-content: center;
+	margin :50px;
 }
