@@ -21,7 +21,7 @@ export async function getWorksInit(endpoint, elementId) {
  * @param {Array<Object>} workLocation - Array of work objects, each containing `imageUrl` and `title` properties.
  * @param {string} elementSelection - CSS selector string for the container element where works will be displayed.
  */
-function displayWorks(workLocation, elementSelection) {
+export function displayWorks(workLocation, elementSelection) {
 
     clearHTMLElement(elementSelection);
     const displayContainer = document.querySelector(elementSelection)
