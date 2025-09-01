@@ -1,4 +1,4 @@
-import  {getWorksInit,getFiltersInit} from "./modules/gallery.js";
+import  {galleryInit} from "./modules/gallery.js";
 
 /**
  * Initializes the application by fetching and rendering works and filters.
@@ -9,8 +9,8 @@ import  {getWorksInit,getFiltersInit} from "./modules/gallery.js";
  * @returns {Promise<void>} Resolves when initialization is complete.
  */
 async function init() {
-    getWorksInit('works', '.gallery');
-    getFiltersInit('categories', '.filter-btn-container')
+    galleryInit()
+
 }
 
 
