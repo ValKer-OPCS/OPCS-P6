@@ -55,6 +55,10 @@ body {
   font-size: 14px;
 }
 
+.hidden {
+  display: none;
+}
+
 h1 {
   display: flex;
   flex-direction: column;
@@ -197,6 +201,7 @@ input[type=submit] {
   border-radius: 60px;
   height: 37px;
   min-width: 100px;
+  padding: 0px 15px 0px 15px;
 }
 
 .filter-btn-active {
