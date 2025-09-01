@@ -7,22 +7,14 @@
 // filterable gallery interface.
 
 
-
 import { clearHTMLElement } from "./utils.js";
 import { getFrom } from "./fetcher.js";
 
-
-/**
- * Fetches works from the specified endpoint and displays them as filters in the given element.
- *
- * @async
- * @param {string} endpoint - The API endpoint to fetch works from.
- * @param {string} elementId - The ID of the DOM element where filters will be displayed.
- * @returns {Promise<Array>} The fetched works.
- */
-export async function getWorksInit(endpoint, elementId) {
-    const fetchedWorks = await getFrom(endpoint);
-    displayWorks(fetchedWorks, elementId);
+export async function galleryInit() {
+    const images = await getFrom('works')
+    const categories = await getFrom('categories')
+    displayWorks('.gallery', images)
+    displayFilter('.filter-btn-container', categories, images)
 }
 
 
@@ -33,33 +25,18 @@ export async function getWorksInit(endpoint, elementId) {
  * @param {Array<Object>} workLocation - Array of work objects, each containing `imageUrl` and `title` properties.
  * @param {string} elementSelection - CSS selector string for the container element where works will be displayed.
  */
-export function displayWorks(workLocation, elementSelection) {
-
+function displayWorks(elementSelection, imagesArray) {
     clearHTMLElement(elementSelection);
-    const displayContainer = document.querySelector(elementSelection)
+    const displayContainer = document.querySelector(elementSelection);
 
-    workLocation.forEach(work => {
+    imagesArray.forEach(work => {
         const figure = document.createElement('figure');
-        figure.innerHTML =`<img src="${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption>`;
+        figure.innerHTML = `<img src="${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption>`;
         displayContainer.appendChild(figure);
     });
 
 }
 
-
-/**
- * Fetches categories from the specified endpoint and displays them as filters in the given element.
- *
- * @async
- * @param {string} endpoint - The API endpoint to fetch categories from.
- * @param {string} elementId - The ID of the DOM element where filters will be displayed.
- * @returns {Promise<Array>} The fetched categories.
- */
-export async function getFiltersInit(endpoint, elementId) {
-    const fetchedCategories = await getFrom(endpoint);
-    displayFilter(fetchedCategories, elementId);
-    return fetchedCategories
-}
 
 
 
@@ -71,7 +48,7 @@ export async function getFiltersInit(endpoint, elementId) {
  *
  * @returns {void}
  */
-function displayFilter(filterLocation, elementSelection) {
+function displayFilter(elementSelection, filterLocation, images) {
     clearHTMLElement(elementSelection);
     const filterContainer = document.querySelector(elementSelection);
 
@@ -85,13 +62,12 @@ function displayFilter(filterLocation, elementSelection) {
             onClick();
         });
         filterContainer.appendChild(button);
-        return button;
     }
 
-    createFilterButton("Tous", () => getWorksInit('works', '.gallery'), true);
+    createFilterButton("Tous", () => displayWorks('.gallery', images), true);
 
     filterLocation.forEach(({ name }) => {
-        createFilterButton(name, () => filterWorksByCategory(name, '.gallery'));
+        createFilterButton(name, () => filterWorksByCategory(name, '.gallery', images));
     });
 }
 
@@ -116,8 +92,7 @@ function setActiveButton(selectedBtn) {
  * @param {string} gallerySelector - The CSS selector for the gallery element where filtered works will be displayed.
  * @returns {Promise<void>} Resolves when the filtered works have been displayed.
  */
-async function filterWorksByCategory(category, gallerySelector) {
-    const works = await getFrom('works');
-    const filteredWorks = works.filter(work => work.category.name === category);
-    displayWorks(filteredWorks, gallerySelector);
+async function filterWorksByCategory(category, gallerySelector, images) {
+    const filteredWorks = images.filter(work => work.category.name === category);
+     displayWorks(gallerySelector, filteredWorks);
 }
