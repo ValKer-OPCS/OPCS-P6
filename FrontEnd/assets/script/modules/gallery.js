@@ -7,71 +7,62 @@
 // filterable gallery interface.
 
 
-
 import { clearHTMLElement } from "./utils.js";
 import { getFrom } from "./fetcher.js";
 
-
-/**
- * Fetches works from the specified endpoint and displays them as filters in the given element.
- *
- * @async
- * @param {string} endpoint - The API endpoint to fetch works from.
- * @param {string} elementId - The ID of the DOM element where filters will be displayed.
- * @returns {Promise<Array>} The fetched works.
- */
-export async function getWorksInit(endpoint, elementId) {
-    const fetchedWorks = await getFrom(endpoint);
-    displayWorks(fetchedWorks, elementId);
+export async function galleryInit() {
+    const images = await getFrom('works')
+    const categories = await getFrom('categories')
+    displayWorks('.gallery', images)
+    displayFilter('.filter-btn-container', categories, images)
 }
 
 
 
+
 /**
- * Displays a list of works by creating figure elements and appending them to the specified container.
+ * Displays a collection of works in the specified HTML element.
  *
- * @param {Array<Object>} workLocation - Array of work objects, each containing `imageUrl` and `title` properties.
- * @param {string} elementSelection - CSS selector string for the container element where works will be displayed.
+ * This function clears the content of the element identified by the given selector, then iterates
+ * over the provided array of work objects. For each work, it creates a figure element containing an image
+ * and a caption, and appends it to the target element.
+ *
+ * @param {string} elementSelection - A CSS selector string to identify the target HTML element.
+ * @param {Array<{ imageUrl: string, title: string }>} imagesArray - An array of objects, each with properties:
+ *   - imageUrl: The URL of the work's image.
+ *   - title: The title of the work.
  */
-export function displayWorks(workLocation, elementSelection) {
-
+function displayWorks(elementSelection, imagesArray) {
     clearHTMLElement(elementSelection);
-    const displayContainer = document.querySelector(elementSelection)
+    const displayContainer = document.querySelector(elementSelection);
 
-    workLocation.forEach(work => {
+    imagesArray.forEach(work => {
         const figure = document.createElement('figure');
-        figure.innerHTML =`<img src="${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption>`;
+        figure.innerHTML = `<img src="${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption>`;
         displayContainer.appendChild(figure);
     });
 
 }
 
 
-/**
- * Fetches categories from the specified endpoint and displays them as filters in the given element.
- *
- * @async
- * @param {string} endpoint - The API endpoint to fetch categories from.
- * @param {string} elementId - The ID of the DOM element where filters will be displayed.
- * @returns {Promise<Array>} The fetched categories.
- */
-export async function getFiltersInit(endpoint, elementId) {
-    const fetchedCategories = await getFrom(endpoint);
-    displayFilter(fetchedCategories, elementId);
-    return fetchedCategories
-}
 
 
 
 /**
- * Renders filter buttons for categories and attaches event handlers to filter displayed works.
+ * Displays filter buttons in the specified element container.
  *
- * @param {Array<{name: string}>} filterLocation - Array of category objects, each with a 'name' property.
- * @param {string} elementSelection - CSS selector for the container element where filter buttons will be rendered.
+ * This function clears the target HTML element designated by `elementSelection` and dynamically creates
+ * filter buttons that allow users to filter a gallery or view all images. The "Tous" button is created by default
+ * and set as active, while additional buttons are generated based on the entries in `filterLocation`.
  *
- * @returns {void}
+ * @param {string} elementSelection - The selector for the HTML element where filter buttons will be rendered.
+ * @param {Array<Object>} filterLocation - Array of objects representing filter categories. Each object should have at least a `name` property used as the label for the corresponding filter button.
+ * @param {Array<Object>} images - Array of images or works to be displayed or filtered through the gallery.
+ *
+ * @example
+ * displayFilter('.filter-container', [{ name: "Architecture" }, { name: "Interior" }], galleryImages);
  */
-function displayFilter(filterLocation, elementSelection) {
+function displayFilter(elementSelection, filterLocation, images) {
     clearHTMLElement(elementSelection);
     const filterContainer = document.querySelector(elementSelection);
 
@@ -85,21 +76,23 @@ function displayFilter(filterLocation, elementSelection) {
             onClick();
         });
         filterContainer.appendChild(button);
-        return button;
     }
 
-    createFilterButton("Tous", () => getWorksInit('works', '.gallery'), true);
+    createFilterButton("Tous", () => displayWorks('.gallery', images), true);
 
     filterLocation.forEach(({ name }) => {
-        createFilterButton(name, () => filterWorksByCategory(name, '.gallery'));
+        createFilterButton(name, () => filterWorksByCategory(name, '.gallery', images));
     });
 }
 
+
 /**
- * Sets the active state on the selected filter button by adding the 'filter-btn-active' class,
- * and removes the active state from all other filter buttons.
+ * Activates the selected filter button.
  *
- * @param {HTMLElement} selectedBtn - The button element to set as active.
+ * This function removes the 'filter-btn-active' class from all elements with the 'filter-btn' class
+ * and adds it to the specified selected button element.
+ *
+ * @param {HTMLElement} selectedBtn - The DOM element representing the button to be activated.
  */
 function setActiveButton(selectedBtn) {
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('filter-btn-active'));
@@ -107,17 +100,22 @@ function setActiveButton(selectedBtn) {
 }
 
 
+
 /**
- * Filters works by the specified category and displays them in the given gallery.
+ * Filters works by the specified category and displays the filtered works.
+ *
+ * This asynchronous function filters the provided list of work objects by comparing
+ * each work's category name against the specified category, then renders the 
+ * filtered works by invoking the displayWorks function with the provided gallery selector.
  *
  * @async
- * @function
- * @param {string} category - The name of the category to filter works by.
- * @param {string} gallerySelector - The CSS selector for the gallery element where filtered works will be displayed.
- * @returns {Promise<void>} Resolves when the filtered works have been displayed.
+ * @function filterWorksByCategory
+ * @param {string} category - The category name used to filter the work objects.
+ * @param {string} gallerySelector - The selector for the gallery container where the works will be displayed.
+ * @param {Array<Object>} images - An array of work objects, each containing a `category` property with a `name` field.
+ * @returns {Promise<void>} A promise that resolves when the filtered works have been rendered.
  */
-async function filterWorksByCategory(category, gallerySelector) {
-    const works = await getFrom('works');
-    const filteredWorks = works.filter(work => work.category.name === category);
-    displayWorks(filteredWorks, gallerySelector);
+async function filterWorksByCategory(category, gallerySelector, images) {
+    const filteredWorks = images.filter(work => work.category.name === category);
+     displayWorks(gallerySelector, filteredWorks);
 }
