@@ -1,0 +1,46 @@
+#login {
+    display: flex;
+    flex-direction: column;
+    width: 380px;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    margin: 150px 0px 355px 0px;
+
+    & h2 {
+        margin-bottom: 7px;
+    }
+
+    & form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    & label {
+        color: #3D3D3D;
+        font-family: "Work Sans";
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 7px;
+        margin-top: 30px;
+
+    }
+
+    & input:not(#loginBtn) {
+        width: 100%;
+        height: 50px;
+        background: #FFF;
+        border: none;
+        box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.09);
+    }
+    & a{
+        text-decoration: underline;
+    }
+}
+
+#loginBtn{
+    height: 36px ;
+    border: none;
+}
