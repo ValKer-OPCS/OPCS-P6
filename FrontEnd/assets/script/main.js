@@ -1,4 +1,5 @@
 import  {galleryInit} from "./modules/gallery.js";
+import  {smoothScrollOnLoad} from "./modules/utils.js";
 
 /**
  * Initializes the application by fetching and rendering works and filters.
@@ -10,6 +11,7 @@ import  {galleryInit} from "./modules/gallery.js";
  */
 async function init() {
     galleryInit()
+    smoothScrollOnLoad()
 
 }
 
