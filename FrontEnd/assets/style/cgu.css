@@ -287,4 +287,18 @@ input[type=submit] {
 #loginBtn {
   height: 36px;
   border: none;
-}/*# sourceMappingURL=loginpage.css.map */
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+h1 {
+  margin-top: 50px;
+}
+
+p {
+  margin-top: 3px;
+}/*# sourceMappingURL=cgu.css.map */
