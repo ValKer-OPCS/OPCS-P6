@@ -291,4 +291,18 @@ input[type=submit] {
 #loginBtn {
   height: 36px;
   border: none;
-}/*# sourceMappingURL=homepage.css.map */
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+h2 {
+  margin-top: 50px;
+}
+
+p {
+  margin-top: 3px;
+}/*# sourceMappingURL=cgu.css.map */

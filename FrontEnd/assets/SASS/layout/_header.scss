@@ -1,7 +1,11 @@
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0;
+	max-width: 1140px;
+	margin: 50px 150px 0px 150px;
+	& img:hover {
+  filter: invert(45%) sepia(66%) saturate(500%) hue-rotate(345deg) brightness(90%) contrast(85%);
+}
 }
 
 nav ul {
