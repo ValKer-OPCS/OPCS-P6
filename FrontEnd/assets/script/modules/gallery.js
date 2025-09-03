@@ -7,7 +7,7 @@
 // filterable gallery interface.
 
 
-import { clearHTMLElement } from "./utils.js";
+import { clearHTMLElement, clearSessionStorage } from "./utils.js";
 import { getFrom } from "./fetcher.js";
 
 export async function galleryInit() {
@@ -15,6 +15,7 @@ export async function galleryInit() {
     const categories = await getFrom('categories')
     displayWorks('.gallery', images)
     displayFilter('.filter-btn-container', categories, images)
+    adminMode()
 }
 
 
@@ -117,5 +118,41 @@ function setActiveButton(selectedBtn) {
  */
 async function filterWorksByCategory(category, gallerySelector, images) {
     const filteredWorks = images.filter(work => work.category.name === category);
-     displayWorks(gallerySelector, filteredWorks);
+    displayWorks(gallerySelector, filteredWorks);
+}
+
+function adminMode() {
+
+    if (sessionStorage.getItem("token")?.length == 143) {
+        //Hide filter
+        document.querySelector(".filter-btn-container").style.display = "none";
+
+        // Change login to logout
+        const logout = document.getElementById("loginBtn");
+        logout.innerText = "logout";
+
+        // add logout listener
+        logout.addEventListener("click", function (event) {
+            event.preventDefault();               
+            clearSessionStorage('token');
+            location.reload();                     
+        });
+        //display top menu bar
+        const body = document.querySelector("body");
+
+        const adminMenu = document.createElement("div");
+        adminMenu.className = "admin-menu";
+        
+        const editMode = document.createElement("p");
+        editMode.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>Mode édition`;
+        
+
+        body.insertAdjacentElement("afterbegin", adminMenu);
+        adminMenu.insertAdjacentElement("afterbegin", editMode);
+
+        const editBtn = `<span class="editBtn"><i class="fa-regular fa-pen-to-square"></i> modifier</span>`;
+        const portfolio = document.getElementById('portfolioHeader');
+        portfolio.innerHTML = 'Mes Projets' + editBtn
+
+    }
 }
