@@ -258,8 +258,7 @@ input[type=submit] {
   align-self: center;
   align-items: center;
   justify-content: center;
-  justify-self: center;
-  margin: 150px 0px 355px 0px;
+  margin: 150px auto 355px auto;
 }
 #login h2 {
   margin-bottom: 7px;
@@ -291,4 +290,10 @@ input[type=submit] {
 #loginBtn {
   height: 36px;
   border: none;
+}
+
+#errorField {
+  margin-top: 25px;
+  color: red;
+  font-weight: bold;
 }/*# sourceMappingURL=loginpage.css.map */
