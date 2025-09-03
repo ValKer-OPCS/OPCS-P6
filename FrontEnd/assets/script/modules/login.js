@@ -1,7 +1,7 @@
 import  {postTo} from "../modules/fetcher.js";
 
-document.addEventListener("submit", (e) => {
-  e.preventDefault();
+document.addEventListener("submit", (submitButton) => {
+  submitButton.preventDefault();
   let form = {
     email: document.getElementById("email"),
     password: document.getElementById("password"),

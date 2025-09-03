@@ -40,8 +40,8 @@ export async function postTo(endpoint,form) {
         });
 
         if (!response.ok) {
-            loginFailed()
-            throw new Error("Email ou mot de passe erronés");
+            loginFailed();
+            return;
             
 
         }

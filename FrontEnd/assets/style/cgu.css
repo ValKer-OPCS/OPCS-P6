@@ -292,6 +292,12 @@ input[type=submit] {
   border: none;
 }
 
+#errorField {
+  margin-top: 25px;
+  color: red;
+  font-weight: bold;
+}
+
 main {
   display: flex;
   flex-direction: column;
