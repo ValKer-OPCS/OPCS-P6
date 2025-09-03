@@ -2,11 +2,13 @@ html {
   scroll-behavior: smooth;
 }
 body {
-	max-width: 1440px;
 	margin: auto;
 	font-family: 'Work Sans';
 	font-size: 14px;
 	background-color: #FFFEF8;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 main{
 max-width: 1140px;
