@@ -11,11 +11,14 @@ export function smoothScrollOnLoad(){
   if (window.location.hash) {
     const target = document.querySelector(window.location.hash);
     if (target) {
-      // petit délai pour être sûr que tout est chargé
       setTimeout(() => {
         target.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }
   }
 });
+}
+
+export function clearSessionStorage(item) {
+  sessionStorage.removeItem(item);
 }
