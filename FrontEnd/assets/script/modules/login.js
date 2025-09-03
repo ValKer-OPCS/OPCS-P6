@@ -1,14 +1,25 @@
-import  {postTo} from "../modules/fetcher.js";
+import  {postToLogin} from "../modules/fetcher.js";
 
-document.addEventListener("submit", (submitButton) => {
+function loginInit(){
+  loginSubmit()
+}
+
+async function loginSubmit(){
+  document.addEventListener("submit", async (submitButton) => {
   submitButton.preventDefault();
+
   let form = {
     email: document.getElementById("email"),
     password: document.getElementById("password"),
   };
 
-  postTo('users/login',form)
-});
+  const loginOk = await postToLogin("users/login", form);
+
+  if (loginOk) {
+    window.location.replace("../index.html");
+  }
+});}
+
 
 
 export function loginFailed() {
@@ -17,3 +28,10 @@ export function loginFailed() {
     errorField.innerText = 'Email ou mot de passe erronés';
   }
 }
+
+
+
+
+
+loginInit()
+
