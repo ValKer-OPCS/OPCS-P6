@@ -33,7 +33,7 @@ export async function galleryInit() {
  *   - imageUrl: The URL of the work's image.
  *   - title: The title of the work.
  */
-function displayWorks(elementSelection, imagesArray) {
+export function displayWorks(elementSelection, imagesArray) {
     clearHTMLElement(elementSelection);
     const displayContainer = document.querySelector(elementSelection);
 
@@ -150,7 +150,7 @@ function adminMode() {
         body.insertAdjacentElement("afterbegin", adminMenu);
         adminMenu.insertAdjacentElement("afterbegin", editMode);
 
-        const editBtn = `<span class="editBtn"><i class="fa-regular fa-pen-to-square"></i> modifier</span>`;
+        const editBtn = `<span id="editBtn"><i class="fa-regular fa-pen-to-square"></i> modifier</span>`;
         const portfolio = document.getElementById('portfolioHeader');
         portfolio.innerHTML = 'Mes Projets' + editBtn
 
