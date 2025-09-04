@@ -9,7 +9,6 @@ if (sessionStorage.getItem("token")){
     modalOpenBtn.addEventListener('click', () => {
         modal.showModal()
     });
-modal.showModal() // remove once modal fonctionnal
 displayWorks('.modalGallery',images, true)
 
 
