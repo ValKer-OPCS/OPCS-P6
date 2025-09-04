@@ -1,0 +1,95 @@
+#modal {
+    width: 630px;
+    height: 688px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #FFF;
+    border: none;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & #modalCloseBtn {
+        position: absolute;
+        top: 26px;
+        right: 30px;
+        z-index: 9999;
+        font-size: 16px;
+    }
+
+    & #modalCloseBtn:hover {
+        color: #B1663C;
+    }
+
+    & h3 {
+        font-family: "Work Sans";
+        font-size: 26px;
+        font-weight: 400;
+
+        margin-top: 60px;
+        margin-bottom: 45px;
+    }
+
+    & .modalGallery {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        row-gap: 30px;
+        margin: 0px 100px 0px 100px;
+
+        & figure {
+            position: relative;
+
+            & img {
+                width: 77px;
+                height: 102px;
+                flex-shrink: 0;
+            }
+
+            & .deleteButton {
+                position: absolute;
+                width: 17px;
+                height: 17px;
+                flex-shrink: 0;
+                border-radius: 2px;
+                background-color: #000;
+                top: 5px;
+                right: 5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                & i {
+                    color: white;
+                    font-size: 10px;
+                }
+            }
+
+            & figcaption {
+                display: none;
+            }
+
+
+        }
+
+        &::after {
+            content: "";
+            width: 100%;
+            height: 1px;
+            background-color: #B3B3B3;
+            ;
+            margin-top: 67px;
+            margin-bottom: 38px;
+
+        }
+    }
+
+    input[type="submit"] {
+        width: 237px;
+        height: 36px;
+        margin: 0;
+    }
+}
