@@ -9,13 +9,14 @@
 
 import { clearHTMLElement, clearSessionStorage } from "./utils.js";
 import { getFrom } from "./fetcher.js";
+import { modal } from "./modal.js";
 
 export async function galleryInit() {
     const images = await getFrom('works')
     const categories = await getFrom('categories')
-    displayWorks('.gallery', images)
+    displayWorks('.gallery', images, false)
     displayFilter('.filter-btn-container', categories, images)
-    adminMode()
+    adminMode(images)
 }
 
 
@@ -33,16 +34,34 @@ export async function galleryInit() {
  *   - imageUrl: The URL of the work's image.
  *   - title: The title of the work.
  */
-export function displayWorks(elementSelection, imagesArray) {
+export function displayWorks(elementSelection, imagesArray, isModal = false) {
     clearHTMLElement(elementSelection);
     const displayContainer = document.querySelector(elementSelection);
 
-    imagesArray.forEach(work => {
-        const figure = document.createElement('figure');
-        figure.innerHTML = `<img src="${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption>`;
-        displayContainer.appendChild(figure);
-    });
+    if (!displayContainer) return;
 
+    if (isModal) {
+        // Cas où on est dans une modale
+        imagesArray.forEach(work => {
+            const figure = document.createElement('figure');
+            figure.classList.add('modal-figure'); // exemple de style spécifique
+            figure.innerHTML = `
+                <img src="${work.imageUrl}" alt="${work.title}">
+                <span class="deleteButton"><i class="fa-solid fa-trash-can"></i></span>
+            `;
+            displayContainer.appendChild(figure);
+        });
+    } else {
+        // Cas classique (hors modale)
+        imagesArray.forEach(work => {
+            const figure = document.createElement('figure');
+            figure.innerHTML = `
+                <img src="${work.imageUrl}" alt="${work.title}">
+                <figcaption>${work.title}</figcaption>
+            `;
+            displayContainer.appendChild(figure);
+        });
+    }
 }
 
 
@@ -121,7 +140,7 @@ async function filterWorksByCategory(category, gallerySelector, images) {
     displayWorks(gallerySelector, filteredWorks);
 }
 
-function adminMode() {
+function adminMode(images) {
 
     if (sessionStorage.getItem("token")) {
         //Hide filter
@@ -152,7 +171,8 @@ function adminMode() {
 
         const editBtn = `<span id="editBtn"><i class="fa-regular fa-pen-to-square"></i> modifier</span>`;
         const portfolio = document.getElementById('portfolioHeader');
-        portfolio.innerHTML = 'Mes Projets' + editBtn
+        portfolio.innerHTML = 'Mes Projets' + editBtn;
+        setTimeout(() => { modal(images) }, 100);
 
     }
 }
