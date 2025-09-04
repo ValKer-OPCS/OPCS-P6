@@ -333,8 +333,8 @@ input[type=submit] {
 }
 #modal .modalGallery figure .deleteButton {
   position: absolute;
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
   border-radius: 2px;
   background-color: #000;
@@ -343,6 +343,9 @@ input[type=submit] {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+#modal .modalGallery figure .deleteButton:hover {
+  background-color: #B1663C;
 }
 #modal .modalGallery figure .deleteButton i {
   color: white;
