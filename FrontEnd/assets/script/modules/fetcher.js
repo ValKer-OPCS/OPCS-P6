@@ -25,7 +25,7 @@ export async function getFrom(endpoint) {
 }
 
 
-export async function postTo(endpoint,form) {
+export async function postToLogin(endpoint,form) {
     try {
         const response = await fetch(baseUrl + endpoint, {
             method: "POST",
@@ -41,16 +41,17 @@ export async function postTo(endpoint,form) {
 
         if (!response.ok) {
             loginFailed();
-            return;
+            return null;
             
 
         }
 
         const data = await response.json();
         sessionStorage.setItem("token", data.token);
-        window.location.replace("../index.html");
+        return true
     } catch (error) {
         alert(error.message || "Une erreur est survenue lors de la connexion");
         console.error("Erreur login:", error);
+        return false
     }
 }

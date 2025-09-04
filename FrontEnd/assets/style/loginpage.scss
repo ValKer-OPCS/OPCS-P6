@@ -2,6 +2,12 @@
 @use '../SASS/vendors/' as *;
 @use '../SASS/base/' as *;
 @use '../SASS/layout/' as *;
-@use '../SASS/components/' as *;
+
+@use '../SASS/components/forms.scss' as *;
+@use '../SASS/components/login-form.scss' as *;
+@use '../SASS/components/button.scss' as *;
+
+
+
 
 @use '../SASS/themes/' as *;

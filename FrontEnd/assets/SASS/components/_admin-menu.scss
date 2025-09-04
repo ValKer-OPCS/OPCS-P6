@@ -1,0 +1,37 @@
+.admin-menu {
+	background-color: #000000;
+	width: 100%;
+	margin: 0;
+	padding: 0px;
+	height: 60px;
+	color: #FFFFFF;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	font-family: 'Work Sans';
+	font-size: 16px;
+
+	& p {
+		color: #FFFFFF;
+	}
+}
+
+#portfolio {
+
+	& #editBtn {
+		color: #000;
+		text-align: center;
+		font-family: "Work Sans";
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		cursor: pointer;
+
+	}
+	& i {
+		padding: 0px 10px 0px 30px;
+	}
+}

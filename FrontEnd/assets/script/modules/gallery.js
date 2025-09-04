@@ -7,14 +7,16 @@
 // filterable gallery interface.
 
 
-import { clearHTMLElement } from "./utils.js";
+import { clearHTMLElement, clearSessionStorage } from "./utils.js";
 import { getFrom } from "./fetcher.js";
+import { modal } from "./modal.js";
 
 export async function galleryInit() {
     const images = await getFrom('works')
     const categories = await getFrom('categories')
-    displayWorks('.gallery', images)
+    displayWorks('.gallery', images, false)
     displayFilter('.filter-btn-container', categories, images)
+    adminMode(images)
 }
 
 
@@ -32,16 +34,34 @@ export async function galleryInit() {
  *   - imageUrl: The URL of the work's image.
  *   - title: The title of the work.
  */
-function displayWorks(elementSelection, imagesArray) {
+export function displayWorks(elementSelection, imagesArray, isModal = false) {
     clearHTMLElement(elementSelection);
     const displayContainer = document.querySelector(elementSelection);
 
-    imagesArray.forEach(work => {
-        const figure = document.createElement('figure');
-        figure.innerHTML = `<img src="${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption>`;
-        displayContainer.appendChild(figure);
-    });
+    if (!displayContainer) return;
 
+    if (isModal) {
+        // Cas où on est dans une modale
+        imagesArray.forEach(work => {
+            const figure = document.createElement('figure');
+            figure.classList.add('modal-figure'); // exemple de style spécifique
+            figure.innerHTML = `
+                <img src="${work.imageUrl}" alt="${work.title}">
+                <span class="deleteButton"><i class="fa-solid fa-trash-can"></i></span>
+            `;
+            displayContainer.appendChild(figure);
+        });
+    } else {
+        // Cas classique (hors modale)
+        imagesArray.forEach(work => {
+            const figure = document.createElement('figure');
+            figure.innerHTML = `
+                <img src="${work.imageUrl}" alt="${work.title}">
+                <figcaption>${work.title}</figcaption>
+            `;
+            displayContainer.appendChild(figure);
+        });
+    }
 }
 
 
@@ -117,5 +137,42 @@ function setActiveButton(selectedBtn) {
  */
 async function filterWorksByCategory(category, gallerySelector, images) {
     const filteredWorks = images.filter(work => work.category.name === category);
-     displayWorks(gallerySelector, filteredWorks);
+    displayWorks(gallerySelector, filteredWorks);
+}
+
+function adminMode(images) {
+
+    if (sessionStorage.getItem("token")) {
+        //Hide filter
+        document.querySelector(".filter-btn-container").style.display = "none";
+
+        // Change login to logout
+        const logout = document.getElementById("loginBtn");
+        logout.innerText = "logout";
+
+        // add logout listener
+        logout.addEventListener("click", function (event) {
+            event.preventDefault();               
+            clearSessionStorage('token');
+            location.reload();                     
+        });
+        //display top menu bar
+        const body = document.querySelector("body");
+
+        const adminMenu = document.createElement("div");
+        adminMenu.className = "admin-menu";
+        
+        const editMode = document.createElement("p");
+        editMode.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>Mode édition`;
+        
+
+        body.insertAdjacentElement("afterbegin", adminMenu);
+        adminMenu.insertAdjacentElement("afterbegin", editMode);
+
+        const editBtn = `<span id="editBtn"><i class="fa-regular fa-pen-to-square"></i> modifier</span>`;
+        const portfolio = document.getElementById('portfolioHeader');
+        portfolio.innerHTML = 'Mes Projets' + editBtn;
+        setTimeout(() => { modal(images) }, 100);
+
+    }
 }
