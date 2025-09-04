@@ -1,5 +1,5 @@
-import  {galleryInit} from "./modules/gallery.js";
-import  {smoothScrollOnLoad} from "./modules/utils.js";
+import { galleryInit } from "./modules/gallery.js";
+import { smoothScrollOnLoad } from "./modules/utils.js";
 
 /**
  * Initializes the application by fetching and rendering works and filters.
@@ -12,8 +12,39 @@ import  {smoothScrollOnLoad} from "./modules/utils.js";
 async function init() {
     galleryInit()
     smoothScrollOnLoad()
-
+    setTimeout(() => { modal() }, 100);
 }
 
 
 init()
+
+function modal() {
+if (sessionStorage.getItem("token")?.length == 143){
+
+    const modal = document.getElementById('modal')
+    const modalOpenBtn = document.getElementById('editBtn')
+
+    modalOpenBtn.addEventListener('click', () => {
+        modal.showModal()
+    });
+modal.showModal()
+
+
+
+    const modalCloseBtn = document.getElementById('modalCloseBtn')
+    modalCloseBtn.addEventListener('click', () => {
+        modal.close()
+    });
+    modal.addEventListener("click", e => {
+        const dialogDimensions = modal.getBoundingClientRect()
+        if (
+            e.clientX < dialogDimensions.left ||
+            e.clientX > dialogDimensions.right ||
+            e.clientY < dialogDimensions.top ||
+            e.clientY > dialogDimensions.bottom
+        ) {
+            modal.close()
+        }
+    })
+    }
+}
