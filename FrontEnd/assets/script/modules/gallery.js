@@ -123,7 +123,7 @@ async function filterWorksByCategory(category, gallerySelector, images) {
 
 function adminMode() {
 
-    if (sessionStorage.getItem("token")?.length == 143) {
+    if (sessionStorage.getItem("token")) {
         //Hide filter
         document.querySelector(".filter-btn-container").style.display = "none";
 

@@ -19,7 +19,7 @@ async function init() {
 init()
 
 function modal() {
-if (sessionStorage.getItem("token")?.length == 143){
+if (sessionStorage.getItem("token")){
 
     const modal = document.getElementById('modal')
     const modalOpenBtn = document.getElementById('editBtn')
@@ -27,7 +27,7 @@ if (sessionStorage.getItem("token")?.length == 143){
     modalOpenBtn.addEventListener('click', () => {
         modal.showModal()
     });
-modal.showModal()
+modal.showModal() // remove once modal fonctionnal
 
 
 
