@@ -1,4 +1,3 @@
-import  {loginFailed} from "../modules/login.js";
 
 const baseUrl = 'http://127.0.0.1:5678/api/';
 
@@ -25,9 +24,9 @@ export async function getFrom(endpoint) {
 }
 
 
-export async function postToLogin(endpoint,form) {
+export async function postToLogin(form,onLoginFailed) {
     try {
-        const response = await fetch(baseUrl + endpoint, {
+        const response = await fetch(baseUrl + "users/login", {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -40,7 +39,7 @@ export async function postToLogin(endpoint,form) {
         });
 
         if (!response.ok) {
-            loginFailed();
+            onLoginFailed();
             return null;
             
 
