@@ -1,12 +1,12 @@
-
+import { handleHttpErrors } from "./httpErrorHandler.js";
 const baseUrl = 'http://127.0.0.1:5678/api/';
 
 /**
- * Fetches data from the specified API resource.
+ * Asynchronously fetches data from the specified API endpoint.
  *
- * @async
- * @param {string} resource - The API resource endpoint to fetch data from.
- * @returns {Promise<any>} The data returned from the API.
+ * @param {string} endpoint - The API endpoint to fetch data from (appended to the base URL).
+ * @returns {Promise<any>} A promise resolving to the JSON data retrieved from the API.
+ * @throws {Error} Throws an error if the HTTP response is not ok or if a network error occurs.
  */
 export async function getFrom(endpoint) {
 
@@ -24,7 +24,15 @@ export async function getFrom(endpoint) {
 }
 
 
-export async function postToLogin(form,onLoginFailed) {
+/**
+ * Attempts to log in a user by sending a POST request with the form data.
+ *
+ * @param {HTMLFormElement} form - The HTML form element containing login data with 'email' and 'password' fields.
+ * @param {Function} [onLoginFailed] - Optional callback function that is invoked if the login fails. It receives the HTTP response as an argument.
+ * @returns {Promise<boolean>} A promise that resolves to true if login is successful, or false if the login fails or an error occurs.
+ * @throws {Error} Throws an error if a network error occurs during the login process.
+ */
+export async function postToLogin(form, onLoginFailed) {
     try {
         const response = await fetch(baseUrl + "users/login", {
             method: "POST",
@@ -39,18 +47,22 @@ export async function postToLogin(form,onLoginFailed) {
         });
 
         if (!response.ok) {
-            onLoginFailed();
-            return null;
-            
+            handleHttpErrors(response);
 
+            if (typeof onLoginFailed === "function") {
+                onLoginFailed(response);
+            }
+
+            return false;
         }
 
         const data = await response.json();
         sessionStorage.setItem("token", data.token);
-        return true
+        return true;
+
     } catch (error) {
-        alert(error.message || "Une erreur est survenue lors de la connexion");
-        console.error("Erreur login:", error);
-        return false
+        alert(error.message || "An error occurred while trying to log in.");
+        console.error("Login error:", error);
+        return false;
     }
 }
