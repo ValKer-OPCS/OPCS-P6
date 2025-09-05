@@ -381,6 +381,7 @@ dialog#modal[open] input[type=submit] {
 
 #deleteConfirmation #confirmDelete {
   right: 50px;
+  background-color: rgb(133, 41, 41);
 }
 #deleteConfirmation #cancelDelete {
   left: 50px;
