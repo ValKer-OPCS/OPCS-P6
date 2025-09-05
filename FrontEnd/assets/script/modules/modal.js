@@ -1,5 +1,24 @@
+
+
 import { displayWorks } from "./gallery.js";
 
+/**
+ * Initializes and manages the modal dialog for editing images.
+ *
+ * This function sets up event listeners for opening and closing a modal dialog,
+ * including additional behavior to close the modal when clicking outside of its boundaries.
+ * It checks for a valid "token" in sessionStorage before initializing the modal functionality.
+ *
+ * @param {Array|Object} images - The images to be displayed in the modal gallery.
+ *
+ * @listens click - On the modal open button ("editBtn") to display the modal.
+ * @listens click - On the modal close button ("modalCloseBtn") to hide the modal.
+ * @listens click - On the modal itself to close it when a click is detected outside the dialog area.
+ *
+ * @example
+ * // To initialize the modal with image data:
+ * modal(myImages);
+ */
 export function modal(images) {
 if (sessionStorage.getItem("token")){
 
