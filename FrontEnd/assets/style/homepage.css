@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Reset CSS (Eric Meyer) */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -286,7 +287,11 @@ input[type=submit] {
   margin: 50px;
 }
 
-#modal {
+dialog#modal {
+  display: none; /* caché par défaut */
+}
+
+dialog#modal[open] {
   width: 630px;
   height: 688px;
   flex-shrink: 0;
@@ -299,24 +304,24 @@ input[type=submit] {
   flex-direction: column;
   align-items: center;
 }
-#modal #modalCloseBtn {
+dialog#modal[open] #modalCloseBtn {
   position: absolute;
   top: 26px;
   right: 30px;
   z-index: 9999;
   font-size: 16px;
 }
-#modal #modalCloseBtn:hover {
+dialog#modal[open] #modalCloseBtn:hover {
   color: #B1663C;
 }
-#modal h3 {
+dialog#modal[open] h3 {
   font-family: "Work Sans";
   font-size: 26px;
   font-weight: 400;
   margin-top: 60px;
   margin-bottom: 45px;
 }
-#modal .modalGallery {
+dialog#modal[open] .modalGallery {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -324,15 +329,15 @@ input[type=submit] {
   row-gap: 30px;
   margin: 0px 100px 0px 100px;
 }
-#modal .modalGallery figure {
+dialog#modal[open] .modalGallery figure {
   position: relative;
 }
-#modal .modalGallery figure img {
+dialog#modal[open] .modalGallery figure img {
   width: 77px;
   height: 102px;
   flex-shrink: 0;
 }
-#modal .modalGallery figure .deleteButton {
+dialog#modal[open] .modalGallery figure .deleteButton {
   position: absolute;
   width: 18px;
   height: 18px;
@@ -345,17 +350,17 @@ input[type=submit] {
   justify-content: center;
   align-items: center;
 }
-#modal .modalGallery figure .deleteButton:hover {
+dialog#modal[open] .modalGallery figure .deleteButton:hover {
   background-color: #B1663C;
 }
-#modal .modalGallery figure .deleteButton i {
+dialog#modal[open] .modalGallery figure .deleteButton i {
   color: white;
   font-size: 10px;
 }
-#modal .modalGallery figure figcaption {
+dialog#modal[open] .modalGallery figure figcaption {
   display: none;
 }
-#modal .modalGallery::after {
+dialog#modal[open] .modalGallery::after {
   content: "";
   width: 100%;
   height: 1px;
@@ -363,7 +368,7 @@ input[type=submit] {
   margin-top: 37px;
   margin-bottom: 38px;
 }
-#modal input[type=submit] {
+dialog#modal[open] input[type=submit] {
   width: 237px;
   height: 36px;
   margin: 0 0 35px 0;

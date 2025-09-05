@@ -1,4 +1,8 @@
-#modal {
+dialog#modal {
+  display: none; /* caché par défaut */
+}
+
+dialog#modal[open] {
     width: 630px;
     height: 688px;
     flex-shrink: 0;
