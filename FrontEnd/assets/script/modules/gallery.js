@@ -8,8 +8,9 @@
 
 
 import { clearHTMLElement, clearSessionStorage } from "./utils.js";
-import { getFrom } from "./fetcher.js";
+import { getFrom, deleteWork } from "./fetcher.js";
 import { modal } from "./modal.js";
+
 
 export async function galleryInit() {
     const images = await getFrom('works')
@@ -41,7 +42,7 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
     if (!displayContainer) return;
 
     if (isModal) {
-        // Cas où on est dans une modale
+        // dans une modale
         imagesArray.forEach((work, index) => {
             const figure = document.createElement('figure');
             figure.innerHTML = `
@@ -51,12 +52,20 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
             displayContainer.appendChild(figure);
 
             const deleteButton = figure.querySelector('.deleteButton');
-            deleteButton.addEventListener('click', () => {
-                console.log('Index du bouton:', index);
+            deleteButton.addEventListener('click', async () => {
+                const confirmed = confirm(`Supprimer "${work.title}" ?`);
+                if (!confirmed) return;
+
+                const success = await deleteWork(work.id);
+                if (success) {
+                    figure.remove();
+                    imagesArray.splice(index, 1); 
+                    displayWorks('.gallery', imagesArray);
+                }
             });
         });
     } else {
-        // Cas classique (hors modale)
+        // hors modale
         imagesArray.forEach(work => {
             const figure = document.createElement('figure');
             figure.innerHTML = `
