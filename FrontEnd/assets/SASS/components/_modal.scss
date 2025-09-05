@@ -86,13 +86,13 @@ dialog#modal[open] {
 
         &::after {
             content: "";
-            width: 100%;
+            width: 420px;
             height: 1px;
             background-color: #B3B3B3;
-            ;
             margin-top: 37px;
-            margin-bottom: 38px;
-
+            position: absolute;
+            left: 105px;
+            bottom: 119px;
         }
     }
 
@@ -101,5 +101,25 @@ dialog#modal[open] {
         height: 36px;
         margin: 0 0 35px 0;
         padding: 10px 0px;
+        bottom: 0px;
+        position: absolute;
+
+    
     }
+}
+
+#deleteConfirmation {
+    
+    & #confirmDelete{
+        right: 50px;
+    }
+    & #cancelDelete{
+        left: 50px;
+    }
+    & #modalText{
+        position: absolute;
+        bottom: 100px;
+        right: 175px;
+    }
+
 }
