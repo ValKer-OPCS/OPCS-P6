@@ -13,11 +13,11 @@ async function loginSubmit(){
     password: document.getElementById("password"),
   };
 
-  const loginOk = await postToLogin("users/login", form);
+  const loginOk = await postToLogin(form, loginFailed);
 
   if (loginOk) {
     window.location.replace("../index.html");
-  }
+  } 
 });}
 
 
