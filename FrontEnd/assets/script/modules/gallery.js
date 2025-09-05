@@ -9,7 +9,7 @@
 
 import { clearHTMLElement, clearSessionStorage } from "./utils.js";
 import { getFrom, deleteWork } from "./fetcher.js";
-import { modal,showDeleteModal  } from "./modal.js";
+import { modal, showDeleteQuery  } from "./modal.js";
 
 
 export async function galleryInit() {
@@ -67,7 +67,7 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
 
             const deleteButton = figure.querySelector('.deleteButton');
             deleteButton.addEventListener('click', async () => {
-                const confirmed = await showDeleteModal(`Supprimer "${work.title}" ?`);
+                const confirmed = await showDeleteQuery(`Supprimer "${work.title}" ? `);
                 if (!confirmed) return;
 
                 const success = await deleteWork(work.id);
