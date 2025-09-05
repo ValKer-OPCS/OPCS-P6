@@ -24,16 +24,30 @@ export async function galleryInit() {
 
 
 /**
- * Displays a collection of works in the specified HTML element.
+ * Displays works by rendering images and related information in the specified container.
  *
- * This function clears the content of the element identified by the given selector, then iterates
- * over the provided array of work objects. For each work, it creates a figure element containing an image
- * and a caption, and appends it to the target element.
+ * This function clears the content of the container defined by the element selector,
+ * and then appends figure elements for each work in the images array. The rendering
+ * logic differs based on whether the display is in a modal or not.
+ * 
+ * When in modal mode, each figure includes an image and a delete button with a removal callback.
+ * Upon confirmation, the work is removed both from the DOM and the imagesArray, and the gallery is refreshed.
+ * When not in modal mode, each figure includes an image and a caption.
  *
- * @param {string} elementSelection - A CSS selector string to identify the target HTML element.
- * @param {Array<{ imageUrl: string, title: string }>} imagesArray - An array of objects, each with properties:
- *   - imageUrl: The URL of the work's image.
- *   - title: The title of the work.
+ * @param {string} elementSelection - The CSS selector for the container element where works will be displayed.
+ * @param {Array<Object>} imagesArray - An array of work objects, each containing properties such as:
+ *   @param {string} imagesArray[].imageUrl - The URL of the work's image.
+ *   @param {string} imagesArray[].title - The title of the work.
+ *   @param {number} [imagesArray[].id] - The unique identifier of the work (used in modal mode for deletion).
+ * @param {boolean} [isModal=false] - A flag indicating if the works are being displayed in a modal.
+ *
+ * @example
+ * // Display works in a non-modal gallery:
+ * displayWorks('.gallery', worksArray);
+ *
+ * @example
+ * // Display works in a modal with delete functionality:
+ * displayWorks('#modalGallery', worksArray, true);
  */
 export function displayWorks(elementSelection, imagesArray, isModal = false) {
     clearHTMLElement(elementSelection);
