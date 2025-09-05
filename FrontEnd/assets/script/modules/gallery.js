@@ -42,14 +42,18 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
 
     if (isModal) {
         // Cas où on est dans une modale
-        imagesArray.forEach(work => {
+        imagesArray.forEach((work, index) => {
             const figure = document.createElement('figure');
-            figure.classList.add('modal-figure'); // exemple de style spécifique
             figure.innerHTML = `
                 <img src="${work.imageUrl}" alt="${work.title}">
                 <span class="deleteButton"><i class="fa-solid fa-trash-can"></i></span>
             `;
             displayContainer.appendChild(figure);
+
+            const deleteButton = figure.querySelector('.deleteButton');
+            deleteButton.addEventListener('click', () => {
+                console.log('Index du bouton:', index);
+            });
         });
     } else {
         // Cas classique (hors modale)
