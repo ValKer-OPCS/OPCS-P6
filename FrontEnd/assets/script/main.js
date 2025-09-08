@@ -1,4 +1,4 @@
-import { galleryInit, displayWorks } from "./modules/gallery.js";
+import { galleryInit } from "./modules/gallery.js";
 import { smoothScrollOnLoad } from "./modules/utils.js";
 
 

@@ -66,3 +66,29 @@ export async function postToLogin(form, onLoginFailed) {
         return false;
     }
 }
+
+
+// Fonction pour supprimer un work via l'API
+
+export async function deleteWork(workId) {
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+        });
+
+        if (!response.ok) {
+            const errorMessage = handleHttpErrors(response);
+            throw new Error(errorMessage);
+        }
+
+        console.log(`Work ${workId} supprimé avec succès`);
+        return true;
+    } catch (error) {
+        console.error(error.message);
+        return false;
+    }
+}
+

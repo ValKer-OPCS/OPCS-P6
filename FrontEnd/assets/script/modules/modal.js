@@ -49,3 +49,39 @@ displayWorks('.modalGallery',images, true)
     })
     }
 }
+
+
+export function showDeleteQuery(message) {
+    return new Promise((resolve) => {
+        const addBtn = document.getElementById('addPictureBtn');
+        const deleteConfirmation = document.getElementById('deleteConfirmation');
+        const modalText = document.getElementById('modalText');
+        const confirmDelete = document.getElementById('confirmDelete');
+        const cancelDelete = document.getElementById('cancelDelete');
+
+        addBtn.style.display = 'none';
+        deleteConfirmation.style.display = 'block';
+        modalText.textContent = message;
+
+
+        function resetModal() {
+            deleteConfirmation.style.display = 'none';
+            addBtn.style.display = 'inline-block';
+        }
+
+        function onConfirm(event) {
+            event.preventDefault();
+            resetModal();
+            resolve(true);
+        }
+
+        function onCancel(event) {
+            event.preventDefault();
+            resetModal();
+            resolve(false);
+        }
+
+        confirmDelete.addEventListener('click', onConfirm);
+        cancelDelete.addEventListener('click', onCancel);
+    });
+}
