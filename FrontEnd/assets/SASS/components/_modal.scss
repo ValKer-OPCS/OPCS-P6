@@ -1,5 +1,6 @@
 dialog#modal {
-  display: none; /* caché par défaut */
+    display: none;
+    /* caché par défaut */
 }
 
 dialog#modal[open] {
@@ -67,7 +68,7 @@ dialog#modal[open] {
                 justify-content: center;
                 align-items: center;
 
-                &:hover{
+                &:hover {
                     background-color: #B1663C;
                 }
 
@@ -96,7 +97,7 @@ dialog#modal[open] {
         }
     }
 
-    input[type="submit"] {
+    input[type="button"] {
         width: 237px;
         height: 36px;
         margin: 0 0 35px 0;
@@ -104,23 +105,139 @@ dialog#modal[open] {
         bottom: 0px;
         position: absolute;
 
-    
+
     }
 }
 
 #deleteConfirmation {
-    
-    & #confirmDelete{
+    display: none;
+
+    & #confirmDelete {
         right: 50px;
         background-color: rgb(133, 41, 41)
     }
-    & #cancelDelete{
+
+    & #cancelDelete {
         left: 50px;
     }
-    & #modalText{
+
+    & #modalText {
         position: absolute;
         bottom: 100px;
         right: 175px;
     }
 
+}
+
+.upload-box {
+    width: 420px;
+    height: 170px;
+    border-radius: 10px;
+    background: #f0f6fa;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 9px;
+
+    & i {
+        font-size: 76px;
+        color: #B9C5CC;
+    }
+
+
+
+    & img.preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    & .placeholder {
+        text-align: center;
+        color: #666;
+
+        & button {
+            background: #d8e8f3;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #306685;
+            width: 173px;
+            height: 36px;
+        }
+
+        & p {
+            color: #444;
+            font-size: 10px;
+            font-weight: 400;
+
+        }
+    }
+
+}
+
+.img-submit-form {
+  & label {
+    display: block;
+    color: #3D3D3D;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    margin-top: 21px;
+  }
+
+  & #title,
+  & #category {
+    width: 420px;
+    height: 51px;
+    flex-shrink: 0;
+    background: #FFF;
+    box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.09);
+    border: none;
+  }
+
+  .select-wrapper {
+    position: relative;
+    width: 420px;
+
+    select {
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      
+      width: 100%;
+      padding: 0 40px 0 10px; 
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      height: 51px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #fff; 
+    }
+
+    &::after {
+      content: "\f078";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900; // solid
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 16px;
+      color: #333;
+    }
+  }
 }
