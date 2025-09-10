@@ -81,7 +81,7 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
         const addPictureBtn = document.getElementById('addPictureBtn')
             addPictureBtn.addEventListener('click', () => {
                 console.log('pouet');
-                addWorks()
+                addWorks(imagesArray);
             })
     } else {
         // hors modale

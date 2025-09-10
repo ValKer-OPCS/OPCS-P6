@@ -299,6 +299,11 @@ input[type=button] {
   margin: 50px;
 }
 
+#validateAdd:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
 dialog#modal {
   display: none;
   /* caché par défaut */

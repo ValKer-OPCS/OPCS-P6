@@ -312,4 +312,9 @@ input[type=button] {
   align-items: center;
   justify-content: center;
   margin: 50px;
+}
+
+#validateAdd:disabled {
+  background-color: grey;
+  cursor: not-allowed;
 }/*# sourceMappingURL=loginpage.css.map */
