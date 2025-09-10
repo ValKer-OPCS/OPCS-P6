@@ -92,3 +92,31 @@ export async function deleteWork(workId) {
     }
 }
 
+
+export async function sendItem({ title, category, image }) {
+  const formData = new FormData();
+
+  formData.append("title", title);
+  formData.append("category", parseInt(category, 10)); // conversion obligatoire
+  formData.append("image", image);
+
+  // Debug pour voir ce que tu envoies
+  for (let [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+
+  const response = await fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${sessionStorage.getItem("token")}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const message = handleHttpErrors(response);
+    throw new Error(message);
+  }
+
+  return await response.json();
+}

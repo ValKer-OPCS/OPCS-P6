@@ -503,4 +503,8 @@ dialog#modal[open] input[type=button] {
   pointer-events: none;
   font-size: 16px;
   color: #333;
+}
+
+#validateAdd {
+  display: none;
 }/*# sourceMappingURL=homepage.css.map */

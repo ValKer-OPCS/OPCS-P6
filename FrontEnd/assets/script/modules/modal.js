@@ -1,4 +1,4 @@
-import { uploadImageToBackend } from "./fetcher.js";
+import { getFrom, sendItem } from "./fetcher.js";
 
 import { displayWorks } from "./gallery.js";
 
@@ -60,20 +60,17 @@ export function showDeleteQuery(message) {
         modalText.textContent = message;
 
 
-        function resetModal() {
-            deleteConfirmation.style.display = 'none';
-            addBtn.style.display = 'inline-block';
-        }
-
         function onConfirm(event) {
             event.preventDefault();
-            resetModal();
+            deleteConfirmation.style.display = 'none';
+            addBtn.style.display = 'inline-block';
             resolve(true);
         }
 
         function onCancel(event) {
             event.preventDefault();
-            resetModal();
+            deleteConfirmation.style.display = 'none';
+            addBtn.style.display = 'inline-block';
             resolve(false);
         }
 
@@ -82,7 +79,7 @@ export function showDeleteQuery(message) {
     });
 }
 
-export function addWorks() {
+export async function addWorks() {
     const modalText = document.querySelector('.modalTitle');
     const modalGallery = document.querySelector('.modalGallery');
 
@@ -109,11 +106,7 @@ export function addWorks() {
 
         <label for="category">Catégorie</label>
         <div class="select-wrapper">
-            <select id="category">
-                <option value="Objets">Objets</option>
-                <option value="Appartements">Appartements</option>
-                <option value="HotelEtRestaurants">Hotels & restaurants</option>
-            </select>
+            <select id="category"></select>
         </div>
     </div>
     `;
@@ -126,12 +119,12 @@ export function addWorks() {
 
     // Ouvrir file picker sur clic
     uploadBtn.addEventListener('click', (e) => {
-        e.preventDefault();  
+        e.preventDefault();
         e.stopPropagation();
         fileInput.click();
     });
     dropZone.addEventListener('click', (e) => {
-        e.preventDefault();  
+        e.preventDefault();
         e.stopPropagation();
         fileInput.click();
     });
@@ -155,5 +148,51 @@ export function addWorks() {
         reader.readAsDataURL(file);
     });
 
+    // Chargement des catégories
+
+    const categories = await getFrom('categories');
+    console.log(categories)
+    const categoryContainer = document.getElementById('category');
+
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        categoryContainer.appendChild(option);
+
+
+    })
+
     
+    // Changement bouton Ajouter/Valider
+
+    const validateAdd = document.getElementById('validateAdd');
+    const addBtn = document.getElementById('addPictureBtn');
+    validateAdd.style.display = 'inline-block';
+    addBtn.style.display = 'none';
+
+    validateAdd.addEventListener('click', () => {
+        handleSubmit()
+    });
+
+
+    // Construction JSON
+    
+
+    async function handleSubmit() {
+  try {
+    const file = document.getElementById("fileInput").files[0];
+    const title = document.getElementById("title").value;
+    const category = document.getElementById("category").value;
+
+    const result = await sendItem({ title, category, image: file });
+
+    console.log("Item créé avec succès :", result);
+    alert("Item créé !");
+  } catch (error) {
+    console.error("Erreur :", error.message);
+    alert(error.message);
+  }
+}
+
 }

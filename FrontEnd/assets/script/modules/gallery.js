@@ -9,7 +9,7 @@
 
 import { clearHTMLElement, clearSessionStorage } from "./utils.js";
 import { getFrom, deleteWork } from "./fetcher.js";
-import { modal, showDeleteQuery  } from "./modal.js";
+import { modal, showDeleteQuery, addWorks } from "./modal.js";
 
 
 export async function galleryInit() {
@@ -73,11 +73,16 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
                 const success = await deleteWork(work.id);
                 if (success) {
                     figure.remove();
-                    imagesArray.splice(index, 1); 
+                    imagesArray.splice(index, 1);
                     displayWorks('.gallery', imagesArray);
                 }
             });
         });
+        const addPictureBtn = document.getElementById('addPictureBtn')
+            addPictureBtn.addEventListener('click', () => {
+                console.log('pouet');
+                addWorks()
+            })
     } else {
         // hors modale
         imagesArray.forEach(work => {
@@ -179,19 +184,19 @@ function adminMode(images) {
 
         // add logout listener
         logout.addEventListener("click", function (event) {
-            event.preventDefault();               
+            event.preventDefault();
             clearSessionStorage('token');
-            location.reload();                     
+            location.reload();
         });
         //display top menu bar
         const body = document.querySelector("body");
 
         const adminMenu = document.createElement("div");
         adminMenu.className = "admin-menu";
-        
+
         const editMode = document.createElement("p");
         editMode.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>Mode édition`;
-        
+
 
         body.insertAdjacentElement("afterbegin", adminMenu);
         adminMenu.insertAdjacentElement("afterbegin", editMode);
