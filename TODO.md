@@ -11,25 +11,25 @@
   - [X] Include a "All Projects" option by default
 
 ## Step 2: Login Page and Authentication
-- [ ] **2-1: Integrating the login page design**
-  - [ ] Match the mockup design
-- [ ] **2-2: User authentication**
-  - [ ] Make the login form functional
-  - [ ] Redirect to the homepage if credentials are correct
-  - [ ] Display an error message if credentials are incorrect
-  - [ ] Store the token for future operations
+- [X] **2-1: Integrating the login page design**
+  - [X] Match the mockup design
+- [X] **2-2: User authentication**
+  - [X] Make the login form functional
+  - [X] Redirect to the homepage if credentials are correct
+  - [X] Display an error message if credentials are incorrect
+  - [X] Store the token for future operations
 
 ## Step 3: Modal and Project Management
-- [ ] **3-1: Creating the modal window**
-  - [ ] Handle opening and closing (button, cross, click outside)
-  - [ ] Integrate both views: "Photo Gallery" and "Add Photo"
-- [ ] **3-2: Deleting existing projects**
-  - [ ] Delete a project via the API
-  - [ ] Dynamically update the DOM without reloading the page
-- [ ] **3-3: Sending a new project**
-  - [ ] Ensure the form is correctly filled
-  - [ ] Send data to the back-end using `fetch`
-  - [ ] Display an error message if necessary
+- [X] **3-1: Creating the modal window**
+  - [X] Handle opening and closing (button, cross, click outside)
+  - [X] Integrate both views: "Photo Gallery" and "Add Photo"
+- [X] **3-2: Deleting existing projects**
+  - [X] Delete a project via the API
+  - [X] Dynamically update the DOM without reloading the page
+- [X] **3-3: Sending a new project**
+  - [X] Ensure the form is correctly filled
+  - [X] Send data to the back-end using `fetch`
+  - [X] Display an error message if necessary
 - [ ] **3-4: Dynamic display of the new project**
   - [ ] Add the project to the gallery without reloading the page
   - [ ] Add the new image to the modal image list
