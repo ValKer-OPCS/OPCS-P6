@@ -22,27 +22,37 @@ import { displayWorks } from "./gallery.js";
 
 export function modal(images) {
     if (sessionStorage.getItem("token")) {
-
-        const modal = document.getElementById('modal')
-        const modalOpenBtn = document.getElementById('editBtn')
-
-        modalOpenBtn.addEventListener('click', () => {
-            modal.showModal()
-        });
-        displayWorks('.modalGallery', images, true)
-        modal.showModal()
+        const modal = document.getElementById('modal');
+        const modalOpenBtn = document.getElementById('editBtn');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalBackBtn = document.getElementById('modalBackBtn');
 
 
+        modalBackBtn.style.display = "none";
 
-        const modalCloseBtn = document.getElementById('modalCloseBtn')
-        modalCloseBtn.addEventListener('click', () => {
-            modal.close()
-        });
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {  // Vérifie que le clic n'est pas sur un enfant
+        if (!modal.dataset.listenersAttached) {
+            modalOpenBtn.onclick = () => {
+                modal.showModal();
+                resetModal(images); // Toujours démarrer en mode galerie
+            };
+
+            modalCloseBtn.onclick = () => {
                 modal.close();
-            }
-        })
+            };
+
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.close();
+                }
+            };
+
+            modal.addEventListener('close', () => {
+                resetModal(images);
+            });
+
+
+            modal.dataset.listenersAttached = "true";
+        }
     }
 }
 
@@ -59,35 +69,43 @@ export function showDeleteQuery(message) {
         deleteConfirmation.style.display = 'block';
         modalText.textContent = message;
 
+        // Clone button to delete previous listener
+        const tempConfirm = confirmDelete.cloneNode(true);
+        const tempCancel = cancelDelete.cloneNode(true);
+        confirmDelete.replaceWith(tempConfirm);
+        cancelDelete.replaceWith(tempCancel);
 
-        function onConfirm(event) {
+        // Listener to confirm deletion
+        tempConfirm.onclick = (event) => {
             event.preventDefault();
             deleteConfirmation.style.display = 'none';
-            addBtn.style.display = 'inline-block';
+            addBtn.style.display = 'block';
             resolve(true);
-        }
+        };
 
-        function onCancel(event) {
+        // Listener to cancel deletion
+        tempCancel.onclick = (event) => {
             event.preventDefault();
             deleteConfirmation.style.display = 'none';
-            addBtn.style.display = 'inline-block';
+            addBtn.style.display = 'block';
             resolve(false);
-        }
-
-        confirmDelete.addEventListener('click', onConfirm);
-        cancelDelete.addEventListener('click', onCancel);
+        };
     });
 }
 
+
 export async function addWorks(images) {
+
+    // Modal Element selection
     const modalText = document.querySelector('.modalTitle');
     const modalGallery = document.querySelector('.modalGallery');
-    const validateAdd = document.getElementById('validateAdd'); // bouton existant dans le HTML
+    const validateAdd = document.getElementById('validateAdd');
     const addBtn = document.getElementById('addPictureBtn');
+    const modalBackBtn = document.getElementById('modalBackBtn');
 
     modalText.innerText = 'Ajout photo';
 
-    // Injection du formulaire
+    // HTML Injection
     modalGallery.innerHTML = `
     <div class="upload-box" id="dropZone">
         <div class="placeholder">
@@ -112,8 +130,12 @@ export async function addWorks(images) {
         </div>
     </div>
     `;
+    // Back Arrow Event 
+    modalBackBtn.style.display = "block";
+    modalBackBtn.addEventListener('click', () => resetModal(images));
 
-    // Sélection des éléments après injection
+
+    // Element select after injection
     const uploadBtn = document.getElementById('uploadBtn');
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
@@ -121,13 +143,16 @@ export async function addWorks(images) {
     const categorySelect = document.getElementById('category');
     const preview = document.getElementById('preview');
 
-    // Chargement des catégories avec option par défaut
+    // Filling "Catégories" select
+
+        // Default option
     const defaultOption = document.createElement('option');
     defaultOption.value = "";
     defaultOption.textContent = "<>";
     defaultOption.selected = true;
     categorySelect.appendChild(defaultOption);
 
+        // Fetch and generate option 
     const categories = await getFrom('categories');
     categories.forEach(cat => {
         const option = document.createElement('option');
@@ -136,15 +161,15 @@ export async function addWorks(images) {
         categorySelect.appendChild(option);
     });
 
-    // Fonction pour activer/désactiver le bouton Valider
-    function checkForm() {
+    // Check form and disable validate button if !ok
+    const checkForm = () => {
         const file = fileInput.files[0];
         const title = titleInput.value.trim();
         const category = categorySelect.value;
         validateAdd.disabled = !(file && title && category);
     }
 
-    // Prévisualisation + validation
+    // img preview and check after loading img
     fileInput.addEventListener('change', () => {
         const file = fileInput.files[0];
         if (!file) return;
@@ -165,22 +190,22 @@ export async function addWorks(images) {
         checkForm();
     });
 
-    // Event listeners pour les champs texte et select
+    // Event listeners when input or change on text field and select
     titleInput.addEventListener('input', checkForm);
     titleInput.addEventListener('change', checkForm);
     categorySelect.addEventListener('input', checkForm);
     categorySelect.addEventListener('change', checkForm);
 
-    // Ouvrir file picker sur clic
+    // Open file picker on click
     uploadBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); fileInput.click(); });
     dropZone.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); fileInput.click(); });
 
-    // Affichage / masquage des boutons
+    // enable validate button
     validateAdd.style.display = 'inline-block';
     validateAdd.disabled = true;
     addBtn.style.display = 'none';
 
-    // Listener pour envoyer le formulaire
+    // Listener to send new work to backend
     validateAdd.onclick = async () => {
         const file = fileInput.files[0];
         const title = titleInput.value.trim();
@@ -190,11 +215,11 @@ export async function addWorks(images) {
         const result = await sendItem({ title, category, image: file });
         images.push(result);
 
-        // Mise à jour des galeries
+        // galleries update
         displayWorks('.gallery', images, false);
         displayWorks('.modalGallery', images, true);
 
-        // Reset du formulaire pour le prochain ajout
+        // Form reset
         titleInput.value = '';
         categorySelect.value = '';
         fileInput.value = '';
@@ -202,10 +227,36 @@ export async function addWorks(images) {
         preview.style.display = 'none';
         modalText.innerText = 'Galerie photo';
 
-        // Masquer Valider, réafficher Ajouter
+        // hide validate button re-display add button
         validateAdd.style.display = 'none';
         addBtn.style.display = 'inline-block';
         validateAdd.disabled = true;
     };
 }
 
+function resetModal(images) {
+    const modalText = document.querySelector('.modalTitle');
+    const modalGallery = document.querySelector('.modalGallery');
+    const validateAdd = document.getElementById('validateAdd');
+    const addBtn = document.getElementById('addPictureBtn');
+    const modalBackBtn = document.getElementById('modalBackBtn');
+    const deleteConfirmation = document.getElementById('deleteConfirmation');
+
+    modalText.innerText = 'Galerie photo';
+    modalGallery.innerHTML = '';
+
+    
+    displayWorks('.modalGallery', images, true);
+
+    
+    modalBackBtn.style.display = "none";
+    if (validateAdd) validateAdd.style.display = 'none';
+
+    
+    if (addBtn) addBtn.style.display = 'inline-block';
+
+    
+    if (deleteConfirmation) {
+        deleteConfirmation.style.display = 'none';
+    }
+}
