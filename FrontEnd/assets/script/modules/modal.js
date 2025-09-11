@@ -79,13 +79,15 @@ export function showDeleteQuery(message) {
     });
 }
 
-export async function addWorks() {
+export async function addWorks(images) {
     const modalText = document.querySelector('.modalTitle');
     const modalGallery = document.querySelector('.modalGallery');
+    const validateAdd = document.getElementById('validateAdd'); // bouton existant dans le HTML
+    const addBtn = document.getElementById('addPictureBtn');
 
     modalText.innerText = 'Ajout photo';
 
-    // Injection du HTML
+    // Injection du formulaire
     modalGallery.innerHTML = `
     <div class="upload-box" id="dropZone">
         <div class="placeholder">
@@ -95,7 +97,7 @@ export async function addWorks() {
             <br>
             <p>jpg, png : 4mo max</p>
         </div>
-        <img id="preview" class="preview" alt="Aperçu"/>
+        <img id="preview" class="preview" alt="Aperçu" style="display:none;"/>
     </div>
 
     <input type="file" id="fileInput" accept="image/*" hidden>
@@ -111,25 +113,38 @@ export async function addWorks() {
     </div>
     `;
 
-    // Sélection des éléments
+    // Sélection des éléments après injection
     const uploadBtn = document.getElementById('uploadBtn');
-    const dropZone = document.getElementById('dropZone')
+    const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
+    const titleInput = document.getElementById('title');
+    const categorySelect = document.getElementById('category');
     const preview = document.getElementById('preview');
 
-    // Ouvrir file picker sur clic
-    uploadBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        fileInput.click();
-    });
-    dropZone.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        fileInput.click();
+    // Chargement des catégories avec option par défaut
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "";
+    defaultOption.textContent = "<>";
+    defaultOption.selected = true;
+    categorySelect.appendChild(defaultOption);
+
+    const categories = await getFrom('categories');
+    categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.id;
+        option.textContent = cat.name;
+        categorySelect.appendChild(option);
     });
 
-    // Aperçu de l'image sélectionnée
+    // Fonction pour activer/désactiver le bouton Valider
+    function checkForm() {
+        const file = fileInput.files[0];
+        const title = titleInput.value.trim();
+        const category = categorySelect.value;
+        validateAdd.disabled = !(file && title && category);
+    }
+
+    // Prévisualisation + validation
     fileInput.addEventListener('change', () => {
         const file = fileInput.files[0];
         if (!file) return;
@@ -137,62 +152,60 @@ export async function addWorks() {
         if (file.size > 4 * 1024 * 1024) {
             alert('Le fichier est trop lourd (max 4 Mo)');
             fileInput.value = '';
-            return;
+            preview.src = '';
+            preview.style.display = 'none';
+        } else {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
         }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
+        checkForm();
     });
 
-    // Chargement des catégories
+    // Event listeners pour les champs texte et select
+    titleInput.addEventListener('input', checkForm);
+    titleInput.addEventListener('change', checkForm);
+    categorySelect.addEventListener('input', checkForm);
+    categorySelect.addEventListener('change', checkForm);
 
-    const categories = await getFrom('categories');
-    console.log(categories)
-    const categoryContainer = document.getElementById('category');
+    // Ouvrir file picker sur clic
+    uploadBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); fileInput.click(); });
+    dropZone.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); fileInput.click(); });
 
-    categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.id;
-        option.textContent = category.name;
-        categoryContainer.appendChild(option);
-
-
-    })
-
-    
-    // Changement bouton Ajouter/Valider
-
-    const validateAdd = document.getElementById('validateAdd');
-    const addBtn = document.getElementById('addPictureBtn');
+    // Affichage / masquage des boutons
     validateAdd.style.display = 'inline-block';
+    validateAdd.disabled = true;
     addBtn.style.display = 'none';
 
-    validateAdd.addEventListener('click', () => {
-        handleSubmit()
-    });
+    // Listener pour envoyer le formulaire
+    validateAdd.onclick = async () => {
+        const file = fileInput.files[0];
+        const title = titleInput.value.trim();
+        const category = categorySelect.value;
+        if (!file || !title || !category) return;
 
+        const result = await sendItem({ title, category, image: file });
+        images.push(result);
 
-    // Construction JSON
-    
+        // Mise à jour des galeries
+        displayWorks('.gallery', images, false);
+        displayWorks('.modalGallery', images, true);
 
-    async function handleSubmit() {
-  try {
-    const file = document.getElementById("fileInput").files[0];
-    const title = document.getElementById("title").value;
-    const category = document.getElementById("category").value;
+        // Reset du formulaire pour le prochain ajout
+        titleInput.value = '';
+        categorySelect.value = '';
+        fileInput.value = '';
+        preview.src = '';
+        preview.style.display = 'none';
+        modalText.innerText = 'Galerie photo';
 
-    const result = await sendItem({ title, category, image: file });
-
-    console.log("Item créé avec succès :", result);
-    alert("Item créé !");
-  } catch (error) {
-    console.error("Erreur :", error.message);
-    alert(error.message);
-  }
+        // Masquer Valider, réafficher Ajouter
+        validateAdd.style.display = 'none';
+        addBtn.style.display = 'inline-block';
+        validateAdd.disabled = true;
+    };
 }
 
-}
