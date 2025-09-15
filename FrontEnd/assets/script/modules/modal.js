@@ -33,7 +33,7 @@ export function modal(images) {
         if (!modal.dataset.listenersAttached) {
             modalOpenBtn.onclick = () => {
                 modal.showModal();
-                resetModal(images); // Toujours démarrer en mode galerie
+                resetModal(images);
             };
 
             modalCloseBtn.onclick = () => {
@@ -113,12 +113,12 @@ export async function addWorks(images) {
             <br>
             <button id="uploadBtn" type="button">+ Ajouter photo</button>
             <br>
-            <p>jpg, png : 4mo max</p>
+            <p id="inputTextField">jpg, png : 4mo max</p>
         </div>
         <img id="preview" class="preview" alt="Aperçu" style="display:none;"/>
     </div>
 
-    <input type="file" id="fileInput" accept="image/*" hidden>
+    <input type="file" id="fileInput" accept="image/png, image/jpeg" hidden>
 
     <div class="img-submit-form">
         <label for="title">Titre</label>
@@ -142,6 +142,7 @@ export async function addWorks(images) {
     const titleInput = document.getElementById('title');
     const categorySelect = document.getElementById('category');
     const preview = document.getElementById('preview');
+    const inputTextField = document.getElementById('inputTextField');
 
     // Filling "Catégories" select
 
@@ -174,8 +175,18 @@ export async function addWorks(images) {
         const file = fileInput.files[0];
         if (!file) return;
 
+        if (!file.type.startsWith('image/')) {
+            inputTextField.innerText = 'Le fichier doit être une image (jpg ou png)';
+            inputTextField.style = "color:red"
+            fileInput.value = '';
+            preview.src = '';
+            preview.style.display = 'none';
+            return;
+        }
+
         if (file.size > 4 * 1024 * 1024) {
-            alert('Le fichier est trop lourd (max 4 Mo)');
+            inputTextField.innerText = 'Le fichier est trop lourd (max 4 Mo)';
+            inputTextField.style = "color:red"
             fileInput.value = '';
             preview.src = '';
             preview.style.display = 'none';
