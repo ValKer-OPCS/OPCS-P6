@@ -1,5 +1,4 @@
-import { getFrom, sendItem } from "./fetcher.js";
-
+import { getFrom, sendItem, deleteWork } from "./fetcher.js";
 import { displayWorks } from "./gallery.js";
 
 
@@ -257,4 +256,41 @@ function resetModal(images) {
     }
 }
 
+export function displayModalWorks(imagesArray) {
+    const displayContainer = document.querySelector('.modalGallery');
+    if (!displayContainer) return;
+
+    displayContainer.innerHTML = '';
+
+    imagesArray.forEach((work, index) => {
+        const figure = document.createElement('figure');
+        figure.innerHTML = `
+            <img src="${work.imageUrl}" alt="${work.title}">
+            <span class="deleteButton"><i class="fa-solid fa-trash-can"></i></span>
+        `;
+        displayContainer.appendChild(figure);
+
+        const deleteButton = figure.querySelector('.deleteButton');
+        deleteButton.addEventListener('click', async () => {
+            const confirmed = await showDeleteQuery(`Supprimer "${work.title}" ?`);
+            if (!confirmed) return;
+
+            const success = await deleteWork(work.id);
+            if (success) {
+                figure.remove();
+                imagesArray.splice(index, 1);
+                displayWorks('.gallery', imagesArray); // update galerie principale
+                displayModalWorks(imagesArray); // refresh modale
+            }
+        });
+    });
+
+    const addPictureBtn = document.getElementById('addPictureBtn');
+    if (addPictureBtn && !addPictureBtn.dataset.listenerAttached) {
+        addPictureBtn.addEventListener('click', () => {
+            addWorks(imagesArray);
+        });
+        addPictureBtn.dataset.listenerAttached = "true";
+    }
+}
 

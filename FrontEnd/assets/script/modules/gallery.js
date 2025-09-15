@@ -1,6 +1,6 @@
 import { clearHTMLElement, clearSessionStorage } from "./utils.js";
-import { getFrom, deleteWork } from "./fetcher.js";
-import { modal, showDeleteQuery, addWorks } from "./modal.js";
+import { getFrom } from "./fetcher.js";
+import { modal,displayModalWorks } from "./modal.js";
 
 
 export async function galleryInit() {
@@ -18,36 +18,8 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
     if (!displayContainer) return;
 
     if (isModal) {
-        // dans une modale
-        imagesArray.forEach((work, index) => {
-            const figure = document.createElement('figure');
-            figure.innerHTML = `
-                <img src="${work.imageUrl}" alt="${work.title}">
-                <span class="deleteButton"><i class="fa-solid fa-trash-can"></i></span>
-            `;
-            displayContainer.appendChild(figure);
 
-            const deleteButton = figure.querySelector('.deleteButton');
-            deleteButton.addEventListener('click', async () => {
-                const confirmed = await showDeleteQuery(`Supprimer "${work.title}" ? `);
-                if (!confirmed) return;
-
-                const success = await deleteWork(work.id);
-                if (success) {
-                    figure.remove();
-                    imagesArray.splice(index, 1);
-                    displayWorks('.gallery', imagesArray);
-                }
-            });
-        });
-        const addPictureBtn = document.getElementById('addPictureBtn')
-        if (!addPictureBtn.dataset.listenerAttached) {
-            addPictureBtn.addEventListener('click', () => {
-                console.log('pouet');
-                addWorks(imagesArray);
-            });
-            addPictureBtn.dataset.listenerAttached = "true";
-        }
+        displayModalWorks(imagesArray);
 
     } else {
         // hors modale
