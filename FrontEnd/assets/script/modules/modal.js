@@ -149,7 +149,7 @@ export async function addWorks(images) {
         // Default option
     const defaultOption = document.createElement('option');
     defaultOption.value = "";
-    defaultOption.textContent = "<>";
+    defaultOption.textContent = "Selectionnez une catégorie";
     defaultOption.selected = true;
     categorySelect.appendChild(defaultOption);
 
@@ -271,3 +271,5 @@ function resetModal(images) {
         deleteConfirmation.style.display = 'none';
     }
 }
+
+
