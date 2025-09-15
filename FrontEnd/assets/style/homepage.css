@@ -355,23 +355,32 @@ dialog#modal[open] .modalContent h3 {
 }
 dialog#modal[open] .modalContent .modalGallery {
   width: 425px;
-  margin: 0 100px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, 77px);
+  grid-auto-rows: 102px;
+  justify-content: center;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
   row-gap: 30px;
   overflow-y: auto;
-  padding-bottom: 10px;
+  padding-bottom: 140px;
   box-sizing: border-box;
   position: relative;
 }
 dialog#modal[open] .modalContent .modalGallery figure {
-  position: relative;
-}
-dialog#modal[open] .modalContent .modalGallery figure img {
   width: 77px;
   height: 102px;
-  flex-shrink: 0;
+  margin: 0;
+  position: relative;
+  display: block;
+}
+dialog#modal[open] .modalContent .modalGallery figure img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
 }
 dialog#modal[open] .modalContent .modalGallery figure .deleteButton {
   position: absolute;
@@ -396,10 +405,24 @@ dialog#modal[open] .modalContent .modalGallery figure .deleteButton i {
 dialog#modal[open] .modalContent .modalGallery figure figcaption {
   display: none;
 }
+dialog#modal[open] .modalContent .modalDivider {
+  width: 420px;
+  height: 1px;
+  background-color: #B3B3B3;
+  margin: 38px auto 0 auto;
+  flex-shrink: 0;
+}
+dialog#modal[open] .modalContent #addPictureBtn {
+  width: 237px;
+  height: 36px;
+  margin: 38px auto 45px auto;
+  flex-shrink: 0;
+}
+dialog#modal[open] .modalContent #validateAdd {
+  display: none;
+}
 dialog#modal[open] .modalContent input[type=button] {
   flex-shrink: 0;
-  margin-top: 20px;
-  margin-bottom: 35px;
   width: 237px;
   height: 36px;
   padding: 10px 0px;
@@ -519,12 +542,4 @@ dialog#modal[open] .modalContent input[type=button] {
 
 #validateAdd {
   display: none;
-}
-
-.modalDivider {
-  width: 420px;
-  height: 1px;
-  background-color: #B3B3B3;
-  margin: 20px 0;
-  flex-shrink: 0;
 }/*# sourceMappingURL=homepage.css.map */

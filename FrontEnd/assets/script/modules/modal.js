@@ -77,45 +77,44 @@ export function showDeleteQuery(message) {
 
 
 export async function addWorks(images) {
-
     // Modal Element selection
     const modalText = document.querySelector('.modalTitle');
     const modalGallery = document.querySelector('.modalGallery');
     const validateAdd = document.getElementById('validateAdd');
     const addBtn = document.getElementById('addPictureBtn');
     const modalBackBtn = document.getElementById('modalBackBtn');
+    const modalAddForm = document.querySelector('.modalAddForm');
 
     modalText.innerText = 'Ajout photo';
 
     // HTML Injection
-    modalGallery.innerHTML = `
-    <div class="upload-box" id="dropZone">
-        <div class="placeholder">
-            <i class="fa-solid fa-image"></i>
-            <br>
-            <button id="uploadBtn" type="button">+ Ajouter photo</button>
-            <br>
-            <p id="inputTextField">jpg, png : 4mo max</p>
+    modalGallery.innerHTML = '';
+    modalGallery.style.display = "none";
+    modalAddForm.innerHTML = `
+        <div class="upload-box" id="dropZone">
+            <div class="placeholder">
+                <i class="fa-solid fa-image"></i>
+                <br>
+                <button id="uploadBtn" type="button">+ Ajouter photo</button>
+                <br>
+                <p id="inputTextField">jpg, png : 4mo max</p>
+            </div>
+            <img id="preview" class="preview" alt="Aperçu" style="display:none;"/>
         </div>
-        <img id="preview" class="preview" alt="Aperçu" style="display:none;"/>
-    </div>
-
-    <input type="file" id="fileInput" accept="image/png, image/jpeg" hidden>
-
-    <div class="img-submit-form">
-        <label for="title">Titre</label>
-        <input type="text" id="title">
-
-        <label for="category">Catégorie</label>
-        <div class="select-wrapper">
-            <select id="category"></select>
+        <input type="file" id="fileInput" accept="image/png, image/jpeg" hidden>
+        <div class="img-submit-form">
+            <label for="title">Titre</label>
+            <input type="text" id="title">
+            <label for="category">Catégorie</label>
+            <div class="select-wrapper">
+                <select id="category"></select>
+            </div>
         </div>
-    </div>
     `;
+
     // Back Arrow Event 
     modalBackBtn.style.display = "block";
-    modalBackBtn.addEventListener('click', () => resetModal(images));
-
+    modalBackBtn.onclick = () => resetModal(images);
 
     // Element select after injection
     const uploadBtn = document.getElementById('uploadBtn');
@@ -127,15 +126,12 @@ export async function addWorks(images) {
     const inputTextField = document.getElementById('inputTextField');
 
     // Filling "Catégories" select
-
-        // Default option
     const defaultOption = document.createElement('option');
     defaultOption.value = "";
     defaultOption.textContent = "Selectionnez une catégorie";
     defaultOption.selected = true;
     categorySelect.appendChild(defaultOption);
 
-        // Fetch and generate option 
     const categories = await getFrom('categories');
     categories.forEach(cat => {
         const option = document.createElement('option');
@@ -159,7 +155,7 @@ export async function addWorks(images) {
 
         if (!file.type.startsWith('image/')) {
             inputTextField.innerText = 'Le fichier doit être une image (jpg ou png)';
-            inputTextField.style = "color:red"
+            inputTextField.style.color = "red";
             fileInput.value = '';
             preview.src = '';
             preview.style.display = 'none';
@@ -168,7 +164,7 @@ export async function addWorks(images) {
 
         if (file.size > 4 * 1024 * 1024) {
             inputTextField.innerText = 'Le fichier est trop lourd (max 4 Mo)';
-            inputTextField.style = "color:red"
+            inputTextField.style.color = "red";
             fileInput.value = '';
             preview.src = '';
             preview.style.display = 'none';
@@ -212,22 +208,11 @@ export async function addWorks(images) {
         displayWorks('.gallery', images, false);
         displayWorks('.modalGallery', images, true);
 
-        // Form reset
-        titleInput.value = '';
-        categorySelect.value = '';
-        fileInput.value = '';
-        preview.src = '';
-        preview.style.display = 'none';
-        modalText.innerText = 'Galerie photo';
-
-        // hide validate button re-display add button
-        validateAdd.style.display = 'none';
-        addBtn.style.display = 'inline-block';
-        validateAdd.disabled = true;
-        modalBackBtn.style.display = 'none';
-
+        // Revenir à l'état galerie avec reset
+        resetModal(images);
     };
 }
+
 
 function resetModal(images) {
     const modalText = document.querySelector('.modalTitle');
@@ -236,25 +221,28 @@ function resetModal(images) {
     const addBtn = document.getElementById('addPictureBtn');
     const modalBackBtn = document.getElementById('modalBackBtn');
     const deleteConfirmation = document.getElementById('deleteConfirmation');
+    const modalAddForm = document.querySelector('.modalAddForm');
 
+    // Texte par défaut
     modalText.innerText = 'Galerie photo';
-    modalGallery.innerHTML = '';
 
-    
+    // Vider le contenu dynamique
+    modalGallery.innerHTML = '';
+    if (modalAddForm) modalAddForm.innerHTML = '';
+
+    // Afficher la galerie principale
+    modalGallery.style.display = "grid";
+    if (modalAddForm) modalAddForm.style.display = "none";
+
     displayWorks('.modalGallery', images, true);
 
-    
+    // Reset boutons
     modalBackBtn.style.display = "none";
     if (validateAdd) validateAdd.style.display = 'none';
-
-    
     if (addBtn) addBtn.style.display = 'inline-block';
-
-    
-    if (deleteConfirmation) {
-        deleteConfirmation.style.display = 'none';
-    }
+    if (deleteConfirmation) deleteConfirmation.style.display = 'none';
 }
+
 
 export function displayModalWorks(imagesArray) {
     const displayContainer = document.querySelector('.modalGallery');
@@ -279,16 +267,18 @@ export function displayModalWorks(imagesArray) {
             if (success) {
                 figure.remove();
                 imagesArray.splice(index, 1);
-                displayWorks('.gallery', imagesArray); // update galerie principale
-                displayModalWorks(imagesArray); // refresh modale
+                displayWorks('.gallery', imagesArray);
+                displayModalWorks(imagesArray);
             }
         });
     });
 
     const addPictureBtn = document.getElementById('addPictureBtn');
+    const modalAddForm = document.querySelector('.modalAddForm');
     if (addPictureBtn && !addPictureBtn.dataset.listenerAttached) {
         addPictureBtn.addEventListener('click', () => {
             addWorks(imagesArray);
+            modalAddForm.style = "display:block"
         });
         addPictureBtn.dataset.listenerAttached = "true";
     }
