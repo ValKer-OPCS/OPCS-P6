@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* Reset CSS (Eric Meyer) */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -306,9 +305,7 @@ input[type=button] {
 
 dialog#modal {
   display: none;
-  /* caché par défaut */
 }
-
 dialog#modal[open] {
   width: 630px;
   height: 688px;
@@ -322,40 +319,61 @@ dialog#modal[open] {
   flex-direction: column;
   align-items: center;
 }
-dialog#modal[open] #modalCloseBtn {
+dialog#modal[open] .modalContent {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+dialog#modal[open] .modalContent #modalCloseBtn {
   position: absolute;
   top: 26px;
   right: 30px;
   z-index: 9999;
   font-size: 16px;
 }
-dialog#modal[open] #modalCloseBtn:hover {
+dialog#modal[open] .modalContent #modalCloseBtn:hover {
   color: #B1663C;
 }
-dialog#modal[open] h3 {
+dialog#modal[open] .modalContent #modalBackBtn {
+  display: none;
+  position: absolute;
+  top: 26px;
+  left: 30px;
+  z-index: 9999;
+  font-size: 16px;
+}
+dialog#modal[open] .modalContent h3 {
   font-family: "Work Sans";
   font-size: 26px;
   font-weight: 400;
   margin-top: 60px;
   margin-bottom: 45px;
+  flex-shrink: 0;
 }
-dialog#modal[open] .modalGallery {
+dialog#modal[open] .modalContent .modalGallery {
+  width: 425px;
+  margin: 0 100px;
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
   gap: 10px;
   row-gap: 30px;
-  margin: 0px 100px 0px 100px;
-}
-dialog#modal[open] .modalGallery figure {
+  overflow-y: auto;
+  padding-bottom: 10px;
+  box-sizing: border-box;
   position: relative;
 }
-dialog#modal[open] .modalGallery figure img {
+dialog#modal[open] .modalContent .modalGallery figure {
+  position: relative;
+}
+dialog#modal[open] .modalContent .modalGallery figure img {
   width: 77px;
   height: 102px;
   flex-shrink: 0;
 }
-dialog#modal[open] .modalGallery figure .deleteButton {
+dialog#modal[open] .modalContent .modalGallery figure .deleteButton {
   position: absolute;
   width: 18px;
   height: 18px;
@@ -368,33 +386,23 @@ dialog#modal[open] .modalGallery figure .deleteButton {
   justify-content: center;
   align-items: center;
 }
-dialog#modal[open] .modalGallery figure .deleteButton:hover {
+dialog#modal[open] .modalContent .modalGallery figure .deleteButton:hover {
   background-color: #B1663C;
 }
-dialog#modal[open] .modalGallery figure .deleteButton i {
+dialog#modal[open] .modalContent .modalGallery figure .deleteButton i {
   color: white;
   font-size: 10px;
 }
-dialog#modal[open] .modalGallery figure figcaption {
+dialog#modal[open] .modalContent .modalGallery figure figcaption {
   display: none;
 }
-dialog#modal[open] .modalGallery::after {
-  content: "";
-  width: 420px;
-  height: 1px;
-  background-color: #B3B3B3;
-  margin-top: 37px;
-  position: absolute;
-  left: 105px;
-  bottom: 119px;
-}
-dialog#modal[open] input[type=button] {
+dialog#modal[open] .modalContent input[type=button] {
+  flex-shrink: 0;
+  margin-top: 20px;
+  margin-bottom: 35px;
   width: 237px;
   height: 36px;
-  margin: 0 0 35px 0;
   padding: 10px 0px;
-  bottom: 0px;
-  position: absolute;
 }
 
 #deleteConfirmation {
@@ -408,9 +416,7 @@ dialog#modal[open] input[type=button] {
   left: 50px;
 }
 #deleteConfirmation #modalText {
-  position: absolute;
-  bottom: 100px;
-  right: 175px;
+  text-align: center;
 }
 
 .upload-box {
@@ -435,8 +441,8 @@ dialog#modal[open] input[type=button] {
 .upload-box img.preview {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  -o-object-fit: contain;
+     object-fit: contain;
   display: none;
   position: absolute;
   top: 0;
@@ -472,7 +478,8 @@ dialog#modal[open] input[type=button] {
   margin-bottom: 10px;
   margin-top: 21px;
 }
-.img-submit-form #title, .img-submit-form #category {
+.img-submit-form #title,
+.img-submit-form #category {
   width: 420px;
   height: 51px;
   flex-shrink: 0;
@@ -512,4 +519,12 @@ dialog#modal[open] input[type=button] {
 
 #validateAdd {
   display: none;
+}
+
+.modalDivider {
+  width: 420px;
+  height: 1px;
+  background-color: #B3B3B3;
+  margin: 20px 0;
+  flex-shrink: 0;
 }/*# sourceMappingURL=homepage.css.map */

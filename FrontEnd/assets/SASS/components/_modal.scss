@@ -1,9 +1,7 @@
 dialog#modal {
-    display: none;
-    /* caché par défaut */
-}
+  display: none;
 
-dialog#modal[open] {
+  &[open] {
     width: 630px;
     height: 688px;
     flex-shrink: 0;
@@ -17,179 +15,181 @@ dialog#modal[open] {
     flex-direction: column;
     align-items: center;
 
-    & #modalCloseBtn {
+    .modalContent {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      #modalCloseBtn {
         position: absolute;
         top: 26px;
         right: 30px;
         z-index: 9999;
         font-size: 16px;
-    }
 
-    & #modalCloseBtn:hover {
-        color: #B1663C;
-    }
+        &:hover {
+          color: #B1663C;
+        }
+      }
 
-    & h3 {
+      #modalBackBtn {
+        display: none;
+        position: absolute;
+        top: 26px;
+        left: 30px;
+        z-index: 9999;
+        font-size: 16px;
+      }
+
+      h3 {
         font-family: "Work Sans";
         font-size: 26px;
         font-weight: 400;
-
         margin-top: 60px;
         margin-bottom: 45px;
-    }
+        flex-shrink: 0;
+      }
 
-    & .modalGallery {
+      .modalGallery {
+        width: 425px;
+        margin: 0 100px;
         display: flex;
-        flex-direction: row;
         flex-wrap: wrap;
         gap: 10px;
         row-gap: 30px;
-        margin: 0px 100px 0px 100px;
+        overflow-y: auto;        
+        padding-bottom: 10px;
+        box-sizing: border-box;
+        position: relative;
+       
 
-        & figure {
-            position: relative;
+        figure {
+          position: relative;
 
-            & img {
-                width: 77px;
-                height: 102px;
-                flex-shrink: 0;
-            }
+          img {
+            width: 77px;
+            height: 102px;
+            flex-shrink: 0;
+          }
 
-            & .deleteButton {
-                position: absolute;
-                width: 18px;
-                height: 18px;
-                flex-shrink: 0;
-                border-radius: 2px;
-                background-color: #000;
-                top: 5px;
-                right: 5px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                &:hover {
-                    background-color: #B1663C;
-                }
-
-                & i {
-                    color: white;
-                    font-size: 10px;
-                }
-            }
-
-            & figcaption {
-                display: none;
-            }
-
-
-        }
-
-        &::after {
-            content: "";
-            width: 420px;
-            height: 1px;
-            background-color: #B3B3B3;
-            margin-top: 37px;
+          .deleteButton {
             position: absolute;
-            left: 105px;
-            bottom: 119px;
-        }
-    }
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            border-radius: 2px;
+            background-color: #000;
+            top: 5px;
+            right: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-    input[type="button"] {
+            &:hover {
+              background-color: #B1663C;
+            }
+
+            i {
+              color: white;
+              font-size: 10px;
+            }
+          }
+
+          figcaption {
+            display: none;
+          }
+        }
+      }
+
+      input[type="button"] {
+        flex-shrink: 0;
+        margin-top: 20px;  // espace au-dessus
+        margin-bottom: 35px;
         width: 237px;
         height: 36px;
-        margin: 0 0 35px 0;
         padding: 10px 0px;
-        bottom: 0px;
-        position: absolute;
-
-
+      }
     }
+  }
 }
 
 #deleteConfirmation {
-    display: none;
+  display: none;
 
-    & #confirmDelete {
-        right: 50px;
-        background-color: rgb(133, 41, 41)
-    }
+  #confirmDelete {
+    right: 50px;
+    background-color: rgb(133, 41, 41);
+  }
 
-    & #cancelDelete {
-        left: 50px;
-    }
+  #cancelDelete {
+    left: 50px;
+  }
 
-    & #modalText {
-        position: absolute;
-        bottom: 100px;
-        right: 175px;
-    }
-
+  #modalText {
+    text-align: center;
+  }
 }
 
 .upload-box {
-    width: 420px;
-    height: 170px;
-    border-radius: 10px;
-    background: #f0f6fa;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    overflow: hidden;
-    position: relative;
-    margin-bottom: 9px;
+  width: 420px;
+  height: 170px;
+  border-radius: 10px;
+  background: #f0f6fa;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 9px;
 
-    & i {
-        font-size: 76px;
-        color: #B9C5CC;
+  i {
+    font-size: 76px;
+    color: #B9C5CC;
+  }
+
+  img.preview {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .placeholder {
+    text-align: center;
+    color: #666;
+
+    button {
+      background: #d8e8f3;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 10px 0;
+      font-weight: bold;
+      color: #306685;
+      width: 173px;
+      height: 36px;
     }
 
-
-
-    & img.preview {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
+    p {
+      color: #444;
+      font-size: 10px;
+      font-weight: 400;
     }
-
-    & .placeholder {
-        text-align: center;
-        color: #666;
-
-        & button {
-            background: #d8e8f3;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 10px 0;
-            font-weight: bold;
-            color: #306685;
-            width: 173px;
-            height: 36px;
-        }
-
-        & p {
-            color: #444;
-            font-size: 10px;
-            font-weight: 400;
-
-        }
-    }
-
+  }
 }
 
 .img-submit-form {
-  & label {
+  label {
     display: block;
     color: #3D3D3D;
     font-size: 14px;
@@ -198,8 +198,8 @@ dialog#modal[open] {
     margin-top: 21px;
   }
 
-  & #title,
-  & #category {
+  #title,
+  #category {
     width: 420px;
     height: 51px;
     flex-shrink: 0;
@@ -216,21 +216,20 @@ dialog#modal[open] {
       appearance: none;
       -moz-appearance: none;
       -webkit-appearance: none;
-      
       width: 100%;
-      padding: 0 40px 0 10px; 
+      padding: 0 40px 0 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
       height: 51px;
       font-size: 14px;
       cursor: pointer;
-      background: #fff; 
+      background: #fff;
     }
 
     &::after {
       content: "\f078";
       font-family: "Font Awesome 6 Free";
-      font-weight: 900; // solid
+      font-weight: 900;
       position: absolute;
       right: 15px;
       top: 50%;
@@ -241,6 +240,15 @@ dialog#modal[open] {
     }
   }
 }
+
 #validateAdd {
-    display:none
+  display: none;
+}
+
+.modalDivider {
+  width: 420px;
+  height: 1px;
+  background-color: #B3B3B3;
+  margin: 20px 0;
+  flex-shrink: 0;
 }
