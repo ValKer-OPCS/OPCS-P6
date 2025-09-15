@@ -30,9 +30,9 @@
   - [X] Ensure the form is correctly filled
   - [X] Send data to the back-end using `fetch`
   - [X] Display an error message if necessary
-- [ ] **3-4: Dynamic display of the new project**
-  - [ ] Add the project to the gallery without reloading the page
-  - [ ] Add the new image to the modal image list
+- [X] **3-4: Dynamic display of the new project**
+  - [X] Add the project to the gallery without reloading the page
+  - [X] Add the new image to the modal image list
 
 ## Step 4: Final Verification
 - [ ] Test all functionalities (add, delete, filter)
