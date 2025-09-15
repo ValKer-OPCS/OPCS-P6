@@ -7,10 +7,7 @@ export function modal(images) {
         const modal = document.getElementById('modal');
         const modalOpenBtn = document.getElementById('editBtn');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
-        const modalBackBtn = document.getElementById('modalBackBtn');
 
-
-        modalBackBtn.style.display = "none";
 
         if (!modal.dataset.listenersAttached) {
             modalOpenBtn.onclick = () => {
@@ -90,27 +87,7 @@ export async function addWorks(images) {
     // HTML Injection
     modalGallery.innerHTML = '';
     modalGallery.style.display = "none";
-    modalAddForm.innerHTML = `
-        <div class="upload-box" id="dropZone">
-            <div class="placeholder">
-                <i class="fa-solid fa-image"></i>
-                <br>
-                <button id="uploadBtn" type="button">+ Ajouter photo</button>
-                <br>
-                <p id="inputTextField">jpg, png : 4mo max</p>
-            </div>
-            <img id="preview" class="preview" alt="Aperçu" style="display:none;"/>
-        </div>
-        <input type="file" id="fileInput" accept="image/png, image/jpeg" hidden>
-        <div class="img-submit-form">
-            <label for="title">Titre</label>
-            <input type="text" id="title">
-            <label for="category">Catégorie</label>
-            <div class="select-wrapper">
-                <select id="category"></select>
-            </div>
-        </div>
-    `;
+    injectFormHTML(modalAddForm);
 
     // Back Arrow Event 
     modalBackBtn.style.display = "block";
@@ -125,65 +102,27 @@ export async function addWorks(images) {
     const preview = document.getElementById('preview');
     const inputTextField = document.getElementById('inputTextField');
 
-    // Filling "Catégories" select
-    const defaultOption = document.createElement('option');
-    defaultOption.value = "";
-    defaultOption.textContent = "Selectionnez une catégorie";
-    defaultOption.selected = true;
-    categorySelect.appendChild(defaultOption);
-
-    const categories = await getFrom('categories');
-    categories.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat.id;
-        option.textContent = cat.name;
-        categorySelect.appendChild(option);
-    });
-
-    // Check form and disable validate button if !ok
-    const checkForm = () => {
-        const file = fileInput.files[0];
-        const title = titleInput.value.trim();
-        const category = categorySelect.value;
-        validateAdd.disabled = !(file && title && category);
-    }
+    selectFiller(categorySelect);
 
     // img preview and check after loading img
     fileInput.addEventListener('change', () => {
         const file = fileInput.files[0];
+        const showError = msg => { inputTextField.innerText = msg; inputTextField.style.color = "red"; preview.src = ''; preview.style.display = 'none'; fileInput.value = ''; };
+
         if (!file) return;
+        if (!['image/jpeg', 'image/png'].includes(file.type)) return showError('Le fichier doit être au format JPG ou PNG');
+        if (file.size > 4 * 1024 * 1024) return showError('Le fichier est trop lourd (max 4 Mo)');
 
-        if (!file.type.startsWith('image/')) {
-            inputTextField.innerText = 'Le fichier doit être une image (jpg ou png)';
-            inputTextField.style.color = "red";
-            fileInput.value = '';
-            preview.src = '';
-            preview.style.display = 'none';
-            return;
-        }
-
-        if (file.size > 4 * 1024 * 1024) {
-            inputTextField.innerText = 'Le fichier est trop lourd (max 4 Mo)';
-            inputTextField.style.color = "red";
-            fileInput.value = '';
-            preview.src = '';
-            preview.style.display = 'none';
-        } else {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-        checkForm();
+        const reader = new FileReader();
+        reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; inputTextField.innerText = '';
+        };
+        reader.readAsDataURL(file);
+         checkForm(fileInput, titleInput, categorySelect, validateAdd);
     });
 
     // Event listeners when input or change on text field and select
-    titleInput.addEventListener('input', checkForm);
-    titleInput.addEventListener('change', checkForm);
-    categorySelect.addEventListener('input', checkForm);
-    categorySelect.addEventListener('change', checkForm);
+    titleInput.addEventListener('input', () => checkForm(fileInput, titleInput, categorySelect, validateAdd));
+    categorySelect.addEventListener('change', () => checkForm(fileInput, titleInput, categorySelect, validateAdd));
 
     // Open file picker on click
     uploadBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); fileInput.click(); });
@@ -284,3 +223,49 @@ export function displayModalWorks(imagesArray) {
     }
 }
 
+function injectFormHTML(container) {
+    container.innerHTML = `
+        <div class="upload-box" id="dropZone">
+            <div class="placeholder">
+                <i class="fa-solid fa-image"></i>
+                <br>
+                <button id="uploadBtn" type="button">+ Ajouter photo</button>
+                <br>
+                <p id="inputTextField">jpg, png : 4mo max</p>
+            </div>
+            <img id="preview" class="preview" alt="Aperçu" style="display:none;"/>
+        </div>
+        <input type="file" id="fileInput" accept="image/png, image/jpeg" hidden>
+        <div class="img-submit-form">
+            <label for="title">Titre</label>
+            <input type="text" id="title">
+            <label for="category">Catégorie</label>
+            <div class="select-wrapper">
+                <select id="category"></select>
+            </div>
+        </div>
+    `;
+}
+
+
+async function selectFiller(categorySelect){
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "";
+    defaultOption.textContent = "Selectionnez une catégorie";
+    defaultOption.selected = true;
+    categorySelect.appendChild(defaultOption);
+
+    const categories = await getFrom('categories');
+    categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.id;
+        option.textContent = cat.name;
+        categorySelect.appendChild(option);
+    });}
+
+    function checkForm(fileInput, titleInput, categorySelect, validateAdd) {
+    const file = fileInput.files[0];
+    const title = titleInput.value.trim();
+    const category = categorySelect.value;
+    validateAdd.disabled = !(file && title && category);
+}
