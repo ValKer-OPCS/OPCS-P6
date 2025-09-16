@@ -309,11 +309,9 @@ dialog#modal {
 dialog#modal[open] {
   width: 630px;
   height: 688px;
-  flex-shrink: 0;
   border-radius: 10px;
   background: #FFF;
   border: none;
-  position: relative;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -322,10 +320,9 @@ dialog#modal[open] {
 dialog#modal[open] .modalContent {
   width: 100%;
   height: 100%;
-  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  position: relative;
 }
 dialog#modal[open] .modalContent #modalCloseBtn {
   position: absolute;
@@ -345,39 +342,46 @@ dialog#modal[open] .modalContent #modalBackBtn {
   z-index: 9999;
   font-size: 16px;
 }
-dialog#modal[open] .modalContent h3 {
+dialog#modal[open] .modalContent h3.modalTitle {
   font-family: "Work Sans";
   font-size: 26px;
   font-weight: 400;
-  margin-top: 60px;
-  margin-bottom: 45px;
+  margin: 60px 0 45px 0;
+  text-align: center;
   flex-shrink: 0;
 }
 dialog#modal[open] .modalContent .modalGallery {
+  flex: 1;
   width: 425px;
-  margin: 0 100px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, 77px);
+  grid-auto-rows: 102px;
+  justify-content: center;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
   row-gap: 30px;
   overflow-y: auto;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   box-sizing: border-box;
-  position: relative;
 }
 dialog#modal[open] .modalContent .modalGallery figure {
-  position: relative;
-}
-dialog#modal[open] .modalContent .modalGallery figure img {
   width: 77px;
   height: 102px;
-  flex-shrink: 0;
+  margin: 0;
+  position: relative;
+  display: block;
+}
+dialog#modal[open] .modalContent .modalGallery figure img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 dialog#modal[open] .modalContent .modalGallery figure .deleteButton {
   position: absolute;
   width: 18px;
   height: 18px;
-  flex-shrink: 0;
   border-radius: 2px;
   background-color: #000;
   top: 5px;
@@ -396,27 +400,62 @@ dialog#modal[open] .modalContent .modalGallery figure .deleteButton i {
 dialog#modal[open] .modalContent .modalGallery figure figcaption {
   display: none;
 }
-dialog#modal[open] .modalContent input[type=button] {
+dialog#modal[open] .modalContent .modalAddForm {
+  width: 100%;
+  padding: 0;
+  margin-bottom: 27px;
+  display: flex;
+  justify-content: center;
+}
+dialog#modal[open] .modalContent .modalFooter {
+  width: 100%;
+  padding: 20px 0 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
   flex-shrink: 0;
-  margin-top: 20px;
-  margin-bottom: 35px;
+}
+dialog#modal[open] .modalContent .modalFooter .modalDivider {
+  width: 420px;
+  height: 1px;
+  background-color: #B3B3B3;
+  margin-bottom: 15px;
+}
+dialog#modal[open] .modalContent .modalFooter #addPictureBtn,
+dialog#modal[open] .modalContent .modalFooter #validateAdd {
+  width: 237px;
+}
+dialog#modal[open] .modalContent .modalFooter #deleteConfirmation {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+dialog#modal[open] .modalContent .modalFooter #deleteConfirmation #modalText {
+  text-align: center;
+  position: absolute;
+}
+dialog#modal[open] .modalContent .modalFooter #deleteConfirmation .deleteButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+dialog#modal[open] .modalContent .modalFooter #deleteConfirmation .deleteButtons #cancelDelete,
+dialog#modal[open] .modalContent .modalFooter #deleteConfirmation .deleteButtons #confirmDelete {
   width: 237px;
   height: 36px;
-  padding: 10px 0px;
+  border: none;
 }
-
-#deleteConfirmation {
-  display: none;
-}
-#deleteConfirmation #confirmDelete {
-  right: 50px;
+dialog#modal[open] .modalContent .modalFooter #deleteConfirmation .deleteButtons #confirmDelete {
   background-color: rgb(133, 41, 41);
+  color: #fff;
 }
-#deleteConfirmation #cancelDelete {
-  left: 50px;
-}
-#deleteConfirmation #modalText {
-  text-align: center;
+dialog#modal[open] .modalContent .modalFooter input[type=button] {
+  flex-shrink: 0;
+  height: 36px;
+  margin-bottom: 25px;
 }
 
 .upload-box {
@@ -424,7 +463,6 @@ dialog#modal[open] .modalContent input[type=button] {
   height: 170px;
   border-radius: 10px;
   background: #f0f6fa;
-  border: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -475,14 +513,12 @@ dialog#modal[open] .modalContent input[type=button] {
   color: #3D3D3D;
   font-size: 14px;
   font-weight: 500;
-  margin-bottom: 10px;
-  margin-top: 21px;
+  margin: 21px 0 10px 0;
 }
 .img-submit-form #title,
 .img-submit-form #category {
   width: 420px;
   height: 51px;
-  flex-shrink: 0;
   background: #FFF;
   box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.09);
   border: none;
@@ -492,9 +528,9 @@ dialog#modal[open] .modalContent input[type=button] {
   width: 420px;
 }
 .img-submit-form .select-wrapper select {
-  appearance: none;
-  -moz-appearance: none;
   -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   width: 100%;
   padding: 0 40px 0 10px;
   border: 1px solid #ccc;
@@ -519,12 +555,4 @@ dialog#modal[open] .modalContent input[type=button] {
 
 #validateAdd {
   display: none;
-}
-
-.modalDivider {
-  width: 420px;
-  height: 1px;
-  background-color: #B3B3B3;
-  margin: 20px 0;
-  flex-shrink: 0;
 }/*# sourceMappingURL=homepage.css.map */
