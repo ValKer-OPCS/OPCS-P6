@@ -66,20 +66,34 @@
 
 		<dialog id="modal">
 			<div class="modalContent">
-				<div id="modalBackBtn" style="display:none"><i class="fa-solid fa-arrow-left"></i></div>
-				<div id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></div>
+				<div id="modalBackBtn" style="display:none">
+					<i class="fa-solid fa-arrow-left"></i>
+				</div>
+
+				<div id="modalCloseBtn">
+					<i class="fa-solid fa-xmark"></i>
+				</div>
+
 				<h3 class="modalTitle">Galerie photo</h3>
+
 				<div class="modalGallery"></div>
 				<div class="modalAddForm"></div>
-				<div class="modalDivider"></div>
-				<input type="button" id="addPictureBtn" value="Ajouter une photo">
-				<div id="deleteConfirmation">
-					<p id="modalText"></p>
-					<input type="button" id="cancelDelete" value="Annuler">
-					<input type="button" id="confirmDelete" value="Confirmer">
-					
+
+				<div class="modalFooter">
+					<div class="modalDivider"></div>
+
+					<input type="button" id="addPictureBtn" value="Ajouter une photo">
+
+					<div id="deleteConfirmation">
+						<p id="modalText"></p>
+						<div class="deleteButtons">
+							<input type="button" id="cancelDelete" value="Annuler">
+							<input type="button" id="confirmDelete" value="Confirmer">
+						</div>
+					</div>
+
+					<input type="button" id="validateAdd" value="Valider" disabled>
 				</div>
-				<input type="button" id="validateAdd" value="Valider" disabled>
 			</div>
 		</dialog>
 

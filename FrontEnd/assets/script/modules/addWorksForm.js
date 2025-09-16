@@ -16,7 +16,7 @@ export function injectFormHTML(container) {
         <input type="file" id="fileInput" accept="image/png, image/jpeg" hidden>
         <div class="img-submit-form">
             <label for="title">Titre</label>
-            <input type="text" id="title">
+            <input type="text" id="title" placeholder="Saisissez un titre">
             <label for="category">Catégorie</label>
             <div class="select-wrapper">
                 <select id="category"></select>

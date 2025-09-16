@@ -27,7 +27,7 @@ export function showDeleteQuery(message) {
         const cancelDelete = document.getElementById('cancelDelete');
 
         addBtn.style.display = 'none';
-        deleteConfirmation.style.display = 'block';
+        deleteConfirmation.style.display = 'flex';
         modalText.textContent = message;
 
         // Clone button to delete previous listener

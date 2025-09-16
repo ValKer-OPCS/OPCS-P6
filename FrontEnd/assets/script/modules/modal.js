@@ -104,7 +104,7 @@ export function displayModalWorks(imagesArray) {
     if (addPictureBtn && !addPictureBtn.dataset.listenerAttached) {
         addPictureBtn.addEventListener('click', () => {
             addWorks(imagesArray);
-            modalAddForm.style = "display:block"
+            modalAddForm.style = "display:flex"
         });
         addPictureBtn.dataset.listenerAttached = "true";
 
