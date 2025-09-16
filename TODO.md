@@ -35,8 +35,8 @@
   - [X] Add the new image to the modal image list
 
 ## Step 4: Final Verification
-- [ ] Test all functionalities (add, delete, filter)
-- [ ] Check form behavior with incorrect data
-- [ ] Verify visual conformity with the mockup
-- [ ] Ensure the DOM updates correctly after each action
+- [X] Test all functionalities (add, delete, filter)
+- [X] Check form behavior with incorrect data
+- [X] Verify visual conformity with the mockup
+- [X] Ensure the DOM updates correctly after each action
 - [ ] Validate that the project is complete and ready for presentation
