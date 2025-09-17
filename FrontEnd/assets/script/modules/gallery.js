@@ -1,4 +1,4 @@
-import { clearHTMLElement, clearSessionStorage } from "./utils.js";
+import { clearSessionStorage } from "./utils.js";
 import { getFrom } from "./fetcher.js";
 import { modal,displayModalWorks } from "./modal/modal.js";
 
@@ -43,8 +43,9 @@ export async function galleryInit() {
  * displayWorks('.modal-gallery', worksArray, true);
  */
 export function displayWorks(elementSelection, imagesArray, isModal = false) {
-    clearHTMLElement(elementSelection);
+    
     const displayContainer = document.querySelector(elementSelection);
+    displayContainer.innerHTML = "";
 
     if (!displayContainer) return;
 
@@ -82,8 +83,9 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
  * displayFilter('.filter-btn-container', categoriesArray, worksArray);
  */
 function displayFilter(elementSelection, filterLocation, images) {
-    clearHTMLElement(elementSelection);
+    
     const filterContainer = document.querySelector(elementSelection);
+    filterContainer.innerHTML = "";
 
     function createFilterButton(label, onClick, isActive = false) {
         const button = document.createElement('button');
