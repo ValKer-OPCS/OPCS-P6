@@ -32,7 +32,7 @@ export async function getFrom(endpoint) {
  * @returns {Promise<boolean>} A promise that resolves to true if login is successful, or false if the login fails or an error occurs.
  * @throws {Error} Throws an error if a network error occurs during the login process.
  */
-export async function postToLogin(form, onLoginFailed) {
+export async function postToLogin(form) {
     try {
         const response = await fetch(baseUrl + "users/login", {
             method: "POST",
@@ -41,34 +41,26 @@ export async function postToLogin(form, onLoginFailed) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                email: form.email.value,
-                password: form.password.value,
+                email: form.email,
+                password: form.password,
             }),
         });
 
         if (!response.ok) {
-            handleHttpErrors(response);
-
-            if (typeof onLoginFailed === "function") {
-                onLoginFailed(response);
-            }
-
-            return false;
+            
+            const message = handleHttpErrors(response);
+            return { success: false, message };
         }
 
         const data = await response.json();
         sessionStorage.setItem("token", data.token);
-        return true;
+        return { success: true };
 
     } catch (error) {
-        alert(error.message || "An error occurred while trying to log in.");
-        console.error("Login error:", error);
-        return false;
+        return { success: false, message: "Une erreur est survenue lors de la connexion." };
     }
 }
 
-
-// Fonction pour supprimer un work via l'API
 
 export async function deleteWork(workId) {
     try {
@@ -97,10 +89,9 @@ export async function sendItem({ title, category, image }) {
   const formData = new FormData();
 
   formData.append("title", title);
-  formData.append("category", parseInt(category, 10)); // conversion obligatoire
+  formData.append("category", parseInt(category, 10));
   formData.append("image", image);
 
-  // Debug pour voir ce que tu envoies
   for (let [key, value] of formData.entries()) {
     console.log(key, value);
   }

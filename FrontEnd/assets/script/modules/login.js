@@ -22,38 +22,41 @@ function loginInit(){
  * @function loginSubmit
  * @returns {Promise<void>} A promise that resolves once the login submission process is complete.
  */
-async function loginSubmit(){
-  document.addEventListener("submit", async (submitButton) => {
-  submitButton.preventDefault();
+async function loginSubmit() {
+    document.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-  let form = {
-    email: document.getElementById("email"),
-    password: document.getElementById("password"),
-  };
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const errorField = document.getElementById("errorField");
 
-  const loginOk = await postToLogin(form, loginFailed);
+        errorField.innerText = "";
 
-  if (loginOk) {
-    window.location.replace("../index.html");
-  } 
-});}
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+        if (!emailRegex.test(emailInput.value)) {
+            errorField.innerText = "Le format de l'adresse mail est incorrect";
+            return;
+        }
 
-/**
- * Handles a failed login attempt by processing the error response and displaying an appropriate error message.
- * The error message is extracted using the handleHttpErrors function and then displayed in the
- * designated error field element.
- *
- * @function loginFailed
- * @param {Object} response - The HTTP error response object received from the login attempt.
- */
-export function loginFailed(response) {
-  const errorField = document.getElementById("errorField");
+        if (!passwordInput.value.trim()) {
+            errorField.innerText = "Le mot de passe ne peut pas être vide";
+            return;
+        }
 
-  if (errorField) {
-    const message = handleHttpErrors(response);
-    errorField.innerText = message;
-  }
+        const form = {
+            email: emailInput.value,
+            password: passwordInput.value,
+        };
+
+        const result = await postToLogin(form);
+
+        if (result.success) {
+            window.location.replace("../index.html");
+        } else {
+            errorField.innerText = result.message;
+        }
+    });
 }
 
 
