@@ -1,5 +1,5 @@
-import { deleteWork } from "./fetcher.js";
-import { displayWorks } from "./gallery.js";
+import { deleteWork } from "../fetcher.js";
+import { displayWorks } from "../gallery.js";
 import { displayModalWorks } from "./modal.js"
 
 export async function deleteWorksQuery(figure,work,imagesArray,index){

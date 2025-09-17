@@ -1,4 +1,4 @@
-import { displayWorks } from "./gallery.js";
+import { displayWorks } from "../gallery.js";
 import { injectFormHTML, selectFilter, setupFilePickerAndPreview, handleValidateAdd } from "./addWorksForm.js";
 import { deleteWorksQuery } from "./deleteWorks.js";
 

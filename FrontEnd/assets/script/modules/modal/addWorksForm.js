@@ -1,5 +1,5 @@
-import { getFrom, sendItem } from "./fetcher.js";
-import { displayWorks } from "./gallery.js";
+import { getFrom, sendItem } from "../fetcher.js";
+import { displayWorks } from "../gallery.js";
 
 export function injectFormHTML(container) {
     container.innerHTML = `<form id="formAdd">

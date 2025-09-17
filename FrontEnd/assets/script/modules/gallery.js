@@ -1,6 +1,6 @@
 import { clearHTMLElement, clearSessionStorage } from "./utils.js";
 import { getFrom } from "./fetcher.js";
-import { modal,displayModalWorks } from "./modal.js";
+import { modal,displayModalWorks } from "./modal/modal.js";
 
 
 export async function galleryInit() {
