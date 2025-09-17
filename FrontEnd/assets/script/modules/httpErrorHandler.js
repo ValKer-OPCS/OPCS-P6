@@ -1,9 +1,10 @@
+
 /**
- * Generates a human-readable error message based on the HTTP response status.
+ * Processes an HTTP response and returns an appropriate error message based on the status code.
  *
  * @param {Object} response - The HTTP response object.
- * @param {number} response.status - The HTTP status code from the response.
- * @returns {string} The error message corresponding to the provided HTTP status code.
+ * @param {number} response.status - The HTTP status code from the server response.
+ * @returns {string} A user-friendly error message corresponding to the HTTP status code.
  */
 export function handleHttpErrors(response) {
     switch (response.status) {

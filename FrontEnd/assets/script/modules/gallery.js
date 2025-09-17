@@ -2,7 +2,18 @@ import { clearHTMLElement, clearSessionStorage } from "./utils.js";
 import { getFrom } from "./fetcher.js";
 import { modal,displayModalWorks } from "./modal/modal.js";
 
-
+/**
+ * Initializes the gallery by fetching works and categories,
+ * then rendering the gallery, filters, and enabling admin mode.
+ *
+ * @async
+ * @function galleryInit
+ * @returns {Promise<void>} A promise that resolves once the gallery initialization is complete.
+ *
+ * @example
+ * // Initialize the gallery on page load
+ * galleryInit();
+ */
 export async function galleryInit() {
     const images = await getFrom('works')
     const categories = await getFrom('categories')
@@ -11,6 +22,26 @@ export async function galleryInit() {
     adminMode(images)
 }
 
+/**
+ * Renders a collection of works inside a given DOM container or inside a modal.
+ *
+ * @function displayWorks
+ * @param {string} elementSelection - A CSS selector string used to target the container where works should be displayed.
+ * @param {Object[]} imagesArray - An array of work objects to display.
+ * @param {string} imagesArray[].imageUrl - The URL of the work's image.
+ * @param {string} imagesArray[].title - The title of the work.
+ * @param {boolean} [isModal=false] - Whether the works should be displayed inside a modal instead of a normal container.
+ *
+ * @returns {void}
+ *
+ * @example
+ * // Display works in the gallery
+ * displayWorks('.gallery', worksArray);
+ *
+ * @example
+ * // Display works inside a modal
+ * displayWorks('.modal-gallery', worksArray, true);
+ */
 export function displayWorks(elementSelection, imagesArray, isModal = false) {
     clearHTMLElement(elementSelection);
     const displayContainer = document.querySelector(elementSelection);
@@ -22,7 +53,6 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
         displayModalWorks(imagesArray);
 
     } else {
-        // hors modale
         imagesArray.forEach(work => {
             const figure = document.createElement('figure');
             figure.innerHTML = `
@@ -34,7 +64,23 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
     }
 }
 
-
+/**
+ * Renders filter buttons inside a given container to filter works by category.
+ *
+ * @function displayFilter
+ * @param {string} elementSelection - A CSS selector string used to target the container where filter buttons should be rendered.
+ * @param {Object[]} filterLocation - An array of category objects to generate filter buttons from.
+ * @param {string} filterLocation[].name - The name of the category (used as the filter button label).
+ * @param {Object[]} images - An array of work objects to be filtered and displayed.
+ * @param {string} images[].imageUrl - The URL of the work's image.
+ * @param {string} images[].title - The title of the work.
+ *
+ * @returns {void}
+ *
+ * @example
+ * // Display filter buttons for categories
+ * displayFilter('.filter-btn-container', categoriesArray, worksArray);
+ */
 function displayFilter(elementSelection, filterLocation, images) {
     clearHTMLElement(elementSelection);
     const filterContainer = document.querySelector(elementSelection);
@@ -58,18 +104,63 @@ function displayFilter(elementSelection, filterLocation, images) {
     });
 }
 
-
+/**
+ * Sets the given button as the active filter button.
+ *
+ * @function setActiveButton
+ * @param {HTMLButtonElement} selectedBtn - The button element to set as active.
+ * @returns {void}
+ *
+ * @example
+ * // Set a specific button as active
+ * const button = document.querySelector('.filter-btn');
+ * setActiveButton(button);
+ */
 function setActiveButton(selectedBtn) {
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('filter-btn-active'));
     selectedBtn.classList.add('filter-btn-active');
 }
 
-
+/**
+ * Filters works by a given category and displays them in the target gallery.
+ *
+ * @async
+ * @function filterWorksByCategory
+ * @param {string} category - The category name to filter works by.
+ * @param {string} gallerySelector - A CSS selector string for the gallery container where filtered works should be displayed.
+ * @param {Object[]} images - An array of work objects to filter.
+ * @param {string} images[].imageUrl - The URL of the work's image.
+ * @param {string} images[].title - The title of the work.
+ * @param {Object} images[].category - The category object of the work.
+ * @param {string} images[].category.name - The name of the category.
+ *
+ * @returns {Promise<void>} A promise that resolves once the filtered works have been displayed.
+ *
+ * @example
+ * // Display only works from the "Photography" category
+ * filterWorksByCategory('Photography', '.gallery', worksArray);
+ */
 async function filterWorksByCategory(category, gallerySelector, images) {
     const filteredWorks = images.filter(work => work.category.name === category);
     displayWorks(gallerySelector, filteredWorks);
 }
 
+/**
+ * Enables admin mode if a valid session token is found in sessionStorage.
+ *
+ * @function adminMode
+ * @param {Object[]} images - An array of work objects used to populate the modal editor.
+ * @param {string} images[].imageUrl - The URL of the work's image.
+ * @param {string} images[].title - The title of the work.
+ * @param {Object} [images[].category] - The category object of the work.
+ * @param {string} [images[].category.name] - The name of the category.
+ *
+ * @returns {void}
+ *
+ * @example
+ * // Activate admin mode if a token exists
+ * adminMode(worksArray);
+ */
 function adminMode(images) {
 
     if (sessionStorage.getItem("token")) {
