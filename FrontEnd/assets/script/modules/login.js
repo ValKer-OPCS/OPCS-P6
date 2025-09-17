@@ -1,15 +1,4 @@
 import  {postToLogin} from "../modules/fetcher.js";
-import { handleHttpErrors } from "./httpErrorHandler.js";
-
-
-/**
- * Initializes the login process by setting up the login submission event listener.
- *
- * @function loginInit
- */
-function loginInit(){
-  loginSubmit()
-}
 
 
 /**
@@ -63,5 +52,5 @@ async function loginSubmit() {
 
 
 
-loginInit()
+loginSubmit()
 

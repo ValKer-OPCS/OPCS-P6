@@ -82,7 +82,7 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
  * // Display filter buttons for categories
  * displayFilter('.filter-btn-container', categoriesArray, worksArray);
  */
-function displayFilter(elementSelection, filterLocation, images) {
+function displayFilter(elementSelection, filterArray, images) {
     
     const filterContainer = document.querySelector(elementSelection);
     filterContainer.innerHTML = "";
@@ -99,9 +99,9 @@ function displayFilter(elementSelection, filterLocation, images) {
         filterContainer.appendChild(button);
     }
 
-    createFilterButton("Tous", () => displayWorks('.gallery', images), true);
+    createFilterButton("Tous", () => displayWorks('.gallery', images, false), true);
 
-    filterLocation.forEach(({ name }) => {
+    filterArray.forEach(({ name }) => {
         createFilterButton(name, () => filterWorksByCategory(name, '.gallery', images));
     });
 }

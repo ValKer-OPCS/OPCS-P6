@@ -61,7 +61,15 @@ export async function postToLogin(form) {
     }
 }
 
-
+/**
+ * Deletes a work from the backend API using its ID.
+ *
+ * @async
+ * @function deleteWork
+ * @param {number|string} workId - The unique identifier of the work to delete.
+ *
+ * @returns {Promise<boolean>} A promise that resolves to `true` if deletion succeeded, or `false` if it failed.
+ */
 export async function deleteWork(workId) {
     try {
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
@@ -84,7 +92,20 @@ export async function deleteWork(workId) {
     }
 }
 
-
+/**
+ * Sends a new work to the backend API to be added to the gallery.
+ *
+ * @async
+ * @function sendItem
+ * @param {Object} params - The work data to send.
+ * @param {string} params.title - The title of the work.
+ * @param {number|string} params.category - The category ID of the work.
+ * @param {File} params.image - The image file of the work.
+ *
+ * @returns {Promise<Object>} A promise that resolves to the newly created work object.
+ *
+ * @throws {Error} Throws an error if the request fails or the server responds with an error.
+ */
 export async function sendItem({ title, category, image }) {
   const formData = new FormData();
 

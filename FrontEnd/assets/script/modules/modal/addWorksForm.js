@@ -1,6 +1,6 @@
 import { getFrom, sendItem } from "../fetcher.js";
 import { displayWorks } from "../gallery.js";
-
+import { getModalElements, resetModal } from "./modal.js";
 
 /**
  * Injects the HTML structure of the "Add Work" form into the specified container.
@@ -9,11 +9,6 @@ import { displayWorks } from "../gallery.js";
  * @param {HTMLElement} container - The DOM element where the form HTML will be injected.
  *
  * @returns {void}
- *
- * @example
- * // Inject the add work form into the modal container
- * const modalAddForm = document.querySelector('.modalAddForm');
- * injectFormHTML(modalAddForm);
  */
 export function injectFormHTML(container) {
     container.innerHTML = `<form id="formAdd">
@@ -48,11 +43,6 @@ export function injectFormHTML(container) {
  * @param {HTMLSelectElement} categorySelect - The `<select>` element to populate with category options.
  *
  * @returns {Promise<void>} A promise that resolves once the category options have been added.
- *
- * @example
- * // Populate a category select element in the add-work form
- * const categorySelect = document.getElementById('category');
- * await selectFilter(categorySelect);
  */
 export async function selectFilter(categorySelect) {
     const defaultOption = document.createElement('option');
@@ -80,12 +70,6 @@ export async function selectFilter(categorySelect) {
  * @param {HTMLButtonElement} validateAdd - The button used to submit the form.
  *
  * @returns {void}
- *
- * @example
- * // Check form validity whenever inputs change
- * fileInput.addEventListener('change', () => checkForm(fileInput, titleInput, categorySelect, validateAdd));
- * titleInput.addEventListener('input', () => checkForm(fileInput, titleInput, categorySelect, validateAdd));
- * categorySelect.addEventListener('change', () => checkForm(fileInput, titleInput, categorySelect, validateAdd));
  */
 export function checkForm(fileInput, titleInput, categorySelect, validateAdd) {
     const file = fileInput.files[0];
@@ -107,20 +91,15 @@ export function checkForm(fileInput, titleInput, categorySelect, validateAdd) {
  * @param {HTMLElement} inputTextField - The element displaying input-related text (e.g., file instructions or errors).
  *
  * @returns {void}
- *
- * @example
- * // Reset the form after a successful submission
- * formReset(fileInput, titleInput, categorySelect, validateAdd, preview, inputTextField);
  */
 function formReset(fileInput, titleInput, categorySelect, validateAdd, preview, inputTextField) {
+    document.getElementById("formAdd").reset()
     preview.src = '';
     preview.style.display = 'none';
     inputTextField.innerText = '';
     inputTextField.style.color = '';
-    document.getElementById("formAdd").reset()
     checkForm(fileInput, titleInput, categorySelect, validateAdd);
 }
-
 
 /**
  * Handles the validation and submission of the "Add Work" form.
@@ -141,10 +120,6 @@ function formReset(fileInput, titleInput, categorySelect, validateAdd, preview, 
  * @param {string} [params.images[].category.name] - The name of the category.
  *
  * @returns {Promise<void>} A promise that resolves once the work has been submitted, galleries updated, and form reset.
- *
- * @example
- * // Handle submission of the add work form
- * await handleValidateAdd({ fileInput, titleInput, categorySelect, validateAdd, preview, inputTextField, imagesArray });
  */
 export async function handleValidateAdd({ fileInput, titleInput, categorySelect, validateAdd, preview, inputTextField, images }) {
     const file = fileInput.files[0];
@@ -225,4 +200,96 @@ export function addImageForm({ uploadBtn, dropZone, fileInput, titleInput, categ
     categorySelect.addEventListener('change', () => checkForm(fileInput, titleInput, categorySelect, validateAdd));
 
     checkForm(fileInput, titleInput, categorySelect, validateAdd);
+}
+
+/**
+ * Returns key DOM elements of the "Add Work" form inside the modal.
+ *
+ * @function getFormElements
+ * @returns {Object} An object containing references to form DOM elements.
+ * @property {HTMLButtonElement} uploadBtn - The button to trigger file upload ('#uploadBtn').
+ * @property {HTMLElement} dropZone - The drop zone container for drag-and-drop files ('#dropZone').
+ * @property {HTMLInputElement} fileInput - The hidden file input element ('#fileInput').
+ * @property {HTMLInputElement} titleInput - The input for the work's title ('#title').
+ * @property {HTMLSelectElement} categorySelect - The select element for choosing a category ('#category').
+ * @property {HTMLImageElement} preview - The preview image element ('#preview').
+ * @property {HTMLInputElement} inputTextField - The input field for additional text ('#inputTextField').
+ */
+function getFormElements() {
+    return {
+        uploadBtn: document.getElementById('uploadBtn'),
+        dropZone: document.getElementById('dropZone'),
+        fileInput: document.getElementById('fileInput'),
+        titleInput: document.getElementById('title'),
+        categorySelect: document.getElementById('category'),
+        preview: document.getElementById('preview'),
+        inputTextField: document.getElementById('inputTextField')
+    };
+}
+
+/**
+ * Initializes the "Add Work" modal for uploading a new work in admin mode.
+ *
+ * @async
+ * @function addWorks
+ * @param {Object[]} images - An array of work objects, which will be updated upon successfully adding a new work.
+ * @param {string} images[].imageUrl - The URL of the work's image.
+ * @param {string} images[].title - The title of the work.
+ * @param {Object} [images[].category] - The category object of the work.
+ * @param {string} [images[].category.name] - The name of the category.
+ *
+ * @returns {Promise<void>} A promise that resolves once the modal setup is complete.
+ */
+export async function addWorks(images) {
+    const { modalText, modalGallery, validateAdd, addBtn, modalBackBtn, modalAddForm } = getModalElements();
+    modalAddForm.style = "display:flex"
+
+
+    // HTML Injection
+    modalText.innerText = 'Ajout photo';
+    modalGallery.style.display = "none";
+    injectFormHTML(modalAddForm);
+
+    // Element select after injection
+    const { uploadBtn, dropZone, fileInput, titleInput, categorySelect, preview, inputTextField } = getFormElements();
+
+    // Back Arrow Event 
+    modalBackBtn.style.display = "block";
+    modalBackBtn.onclick = () => resetModal(images);
+
+    // enable validate button
+    validateAdd.style.display = 'inline-block';
+    validateAdd.disabled = true;
+    addBtn.style.display = 'none';
+
+    selectFilter(categorySelect);
+    addImageForm({ uploadBtn, dropZone, fileInput, titleInput, categorySelect, validateAdd, preview, inputTextField });
+    validateAdd.onclick = async (e) => {
+        e.preventDefault(); await handleValidateAdd({ fileInput, titleInput, categorySelect, validateAdd, preview, inputTextField, images });
+    };
+
+}
+
+/**
+ * Attaches a click event listener to the "Add Picture" button to open the add-work form.
+ *
+ * @function handleAddBtn
+ * @param {Object[]} imagesArray - The array of work objects to be used in the add-work modal.
+ * @param {string} imagesArray[].imageUrl - The URL of the work's image.
+ * @param {string} imagesArray[].title - The title of the work.
+ * @param {Object} [imagesArray[].category] - The category object of the work.
+ * @param {string} [imagesArray[].category.name] - The name of the category.
+ *
+ * @returns {void}
+ */
+export function handleAddBtn(imagesArray) {
+    const addPictureBtn = document.getElementById('addPictureBtn');
+    if (!addPictureBtn.dataset.listenerAttached) {
+        addPictureBtn.addEventListener('click', () => {
+            addWorks(imagesArray);
+
+        });
+        addPictureBtn.dataset.listenerAttached = "true";
+
+    }
 }

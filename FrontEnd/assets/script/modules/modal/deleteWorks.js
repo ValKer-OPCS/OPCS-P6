@@ -16,10 +16,6 @@ import { displayModalWorks } from "./modal.js"
  * @param {number} index - The index of the work in the `imagesArray`.
  *
  * @returns {Promise<void>} A promise that resolves after the delete operation and UI updates.
- *
- * @example
- * // Attach delete functionality to a figure
- * deleteWorksQuery(figureElement, workObject, worksArray, 2);
  */
 export async function deleteWorksQuery(figure,work,imagesArray,index){
 const deleteButton = figure.querySelector('.deleteButton');
@@ -44,15 +40,6 @@ const deleteButton = figure.querySelector('.deleteButton');
  * @function showDeleteQuery
  * @param {string} message - The message to display in the delete confirmation modal.
  * @returns {Promise<boolean>} A promise that resolves to `true` if confirmed, or `false` if canceled.
- *
- * @example
- * // Show a confirmation dialog for deleting a work
- * const confirmed = await showDeleteQuery('Do you really want to delete "My Work"?');
- * if (confirmed) {
- *     console.log('User confirmed deletion');
- * } else {
- *     console.log('User canceled deletion');
- * }
  */
 export function showDeleteQuery(message) {
     return new Promise((resolve) => {
