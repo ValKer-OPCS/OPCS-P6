@@ -1,4 +1,4 @@
-import { getFrom, sendItem } from "../fetcher.js";
+import { getFrom, postWork } from "../fetcher.js";
 import { displayWorks } from "../gallery.js";
 import { getModalElements, resetModal } from "./modal.js";
 
@@ -128,7 +128,7 @@ export async function handleValidateAdd({ fileInput, titleInput, categorySelect,
 
     if (!file || !title || !category) return;
 
-    const result = await sendItem({ title, category, image: file });
+    const result = await postWork({ title, category, image: file });
     images.push(result);
 
     // Update galleries

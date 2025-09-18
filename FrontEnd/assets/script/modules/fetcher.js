@@ -1,5 +1,5 @@
 import { handleHttpErrors } from "./httpErrorHandler.js";
-const baseUrl = 'http://127.0.0.1:5678/api/';
+
 
 /**
  * Asynchronously fetches data from the specified API endpoint.
@@ -9,18 +9,20 @@ const baseUrl = 'http://127.0.0.1:5678/api/';
  * @throws {Error} Throws an error if the HTTP response is not ok or if a network error occurs.
  */
 export async function getFrom(endpoint) {
+    let response;
 
     try {
-        const response = await fetch(baseUrl + endpoint);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Fetch error:', error);
-        throw error;
+        response = await fetch('http://127.0.0.1:5678/api/' + endpoint);
+    } catch {
+        throw new Error("Une erreur est survenue lors de la connexion.");
     }
+
+    if (!response.ok) {
+        const message = handleHttpErrors(response);
+        throw new Error(message);
+    }
+
+    return response.json();
 }
 
 
@@ -34,7 +36,7 @@ export async function getFrom(endpoint) {
  */
 export async function postToLogin(form) {
     try {
-        const response = await fetch(baseUrl + "users/login", {
+        const response = await fetch('http://127.0.0.1:5678/api/' + "users/login", {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -71,25 +73,27 @@ export async function postToLogin(form) {
  * @returns {Promise<boolean>} A promise that resolves to `true` if deletion succeeded, or `false` if it failed.
  */
 export async function deleteWork(workId) {
+    let response;
+
     try {
-        const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
+        response = await fetch(`http://localhost:5678/api/works/${workId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
         });
-
-        if (!response.ok) {
-            const errorMessage = handleHttpErrors(response);
-            throw new Error(errorMessage);
-        }
-
-        console.log(`Work ${workId} supprimé avec succès`);
-        return true;
-    } catch (error) {
-        console.error(error.message);
-        return false;
+    } catch {
+        // Problème de connexion (serveur éteint, DNS, CORS…)
+        return { success: false, message: "Une erreur est survenue lors de la connexion." };
     }
+
+    if (!response.ok) {
+        const errorMessage = handleHttpErrors(response);
+        return { success: false, message: errorMessage };
+    }
+
+    console.log(`Work ${workId} supprimé avec succès`);
+    return { success: true };
 }
 
 /**
@@ -106,7 +110,7 @@ export async function deleteWork(workId) {
  *
  * @throws {Error} Throws an error if the request fails or the server responds with an error.
  */
-export async function sendItem({ title, category, image }) {
+export async function postWork({ title, category, image }) {
   const formData = new FormData();
 
   formData.append("title", title);

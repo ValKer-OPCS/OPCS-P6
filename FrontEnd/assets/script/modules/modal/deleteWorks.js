@@ -17,20 +17,26 @@ import { displayModalWorks } from "./modal.js"
  *
  * @returns {Promise<void>} A promise that resolves after the delete operation and UI updates.
  */
-export async function deleteWorksQuery(figure,work,imagesArray,index){
-const deleteButton = figure.querySelector('.deleteButton');
-        deleteButton.addEventListener('click', async () => {
-            const confirmed = await showDeleteQuery(`Supprimer "${work.title}" ?`);
-            if (!confirmed) return;
+export async function deleteWorksQuery(figure, work, imagesArray, index) {
+    const deleteButton = figure.querySelector('.deleteButton');
+    deleteButton.addEventListener('click', async () => {
+        const confirmed = await showDeleteQuery(`Supprimer "${work.title}" ?`);
+        if (!confirmed) return;
 
-            const success = await deleteWork(work.id);
-            if (success) {
-                figure.remove();
-                imagesArray.splice(index, 1);
-                displayWorks('.gallery', imagesArray);
-                displayModalWorks(imagesArray);
+        const result = await deleteWork(work.id);
+
+        if (result.success) {
+            figure.remove();
+            imagesArray.splice(index, 1);
+            displayWorks('.gallery', imagesArray);
+            displayModalWorks(imagesArray);
+        } else {
+            const modalText = document.getElementById('modalText');
+            if (modalText) {
+                modalText.innerText = result.message;
             }
-        });
+        }
+    });
 }
 
 

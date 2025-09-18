@@ -11,11 +11,20 @@ import { modal,displayModalWorks } from "./modal/modal.js";
  * @returns {Promise<void>} A promise that resolves once the gallery initialization is complete.
  */
 export async function galleryInit() {
-    const images = await getFrom('works')
-    const categories = await getFrom('categories')
-    displayWorks('.gallery', images, false)
-    displayFilter('.filter-btn-container', categories, images)
-    adminMode(images)
+    try {
+        const images = await getFrom('works');
+        const categories = await getFrom('categories');
+
+        displayWorks('.gallery', images, false);
+        displayFilter('.filter-btn-container', categories, images);
+        adminMode(images);
+
+    } catch (error) {
+        const gallery = document.querySelector('.gallery');
+        if (gallery) {
+            gallery.innerText = error.message;
+        }
+    }
 }
 
 /**
