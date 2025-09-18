@@ -9,10 +9,6 @@ import { modal,displayModalWorks } from "./modal/modal.js";
  * @async
  * @function galleryInit
  * @returns {Promise<void>} A promise that resolves once the gallery initialization is complete.
- *
- * @example
- * // Initialize the gallery on page load
- * galleryInit();
  */
 export async function galleryInit() {
     const images = await getFrom('works')
@@ -33,14 +29,6 @@ export async function galleryInit() {
  * @param {boolean} [isModal=false] - Whether the works should be displayed inside a modal instead of a normal container.
  *
  * @returns {void}
- *
- * @example
- * // Display works in the gallery
- * displayWorks('.gallery', worksArray);
- *
- * @example
- * // Display works inside a modal
- * displayWorks('.modal-gallery', worksArray, true);
  */
 export function displayWorks(elementSelection, imagesArray, isModal = false) {
     
@@ -77,10 +65,6 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
  * @param {string} images[].title - The title of the work.
  *
  * @returns {void}
- *
- * @example
- * // Display filter buttons for categories
- * displayFilter('.filter-btn-container', categoriesArray, worksArray);
  */
 function displayFilter(elementSelection, filterArray, images) {
     
@@ -113,10 +97,6 @@ function displayFilter(elementSelection, filterArray, images) {
  * @param {HTMLButtonElement} selectedBtn - The button element to set as active.
  * @returns {void}
  *
- * @example
- * // Set a specific button as active
- * const button = document.querySelector('.filter-btn');
- * setActiveButton(button);
  */
 function setActiveButton(selectedBtn) {
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('filter-btn-active'));
@@ -137,10 +117,6 @@ function setActiveButton(selectedBtn) {
  * @param {string} images[].category.name - The name of the category.
  *
  * @returns {Promise<void>} A promise that resolves once the filtered works have been displayed.
- *
- * @example
- * // Display only works from the "Photography" category
- * filterWorksByCategory('Photography', '.gallery', worksArray);
  */
 async function filterWorksByCategory(category, gallerySelector, images) {
     const filteredWorks = images.filter(work => work.category.name === category);
@@ -159,9 +135,6 @@ async function filterWorksByCategory(category, gallerySelector, images) {
  *
  * @returns {void}
  *
- * @example
- * // Activate admin mode if a token exists
- * adminMode(worksArray);
  */
 function adminMode(images) {
 
