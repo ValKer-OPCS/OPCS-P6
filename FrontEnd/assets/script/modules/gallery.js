@@ -1,6 +1,6 @@
 import { clearSessionStorage } from "./utils.js";
 import { getFrom } from "./fetcher.js";
-import { modal,displayModalWorks } from "./modal/modal.js";
+import { modal, displayModalWorks } from "./modal/modal.js";
 
 /**
  * Initializes the gallery by fetching works and categories,
@@ -40,27 +40,32 @@ export async function galleryInit() {
  * @returns {void}
  */
 export function displayWorks(elementSelection, imagesArray, isModal = false) {
-    
     const displayContainer = document.querySelector(elementSelection);
-    displayContainer.innerHTML = "";
-
     if (!displayContainer) return;
 
+    displayContainer.replaceChildren();
+
     if (isModal) {
-
         displayModalWorks(imagesArray);
-
     } else {
         imagesArray.forEach(work => {
             const figure = document.createElement('figure');
-            figure.innerHTML = `
-                <img src="${work.imageUrl}" alt="${work.title}">
-                <figcaption>${work.title}</figcaption>
-            `;
+
+            const img = document.createElement('img');
+            img.src = work.imageUrl;
+            img.alt = work.title;
+
+            const caption = document.createElement('figcaption');
+            caption.textContent = work.title;
+
+            figure.appendChild(img);
+            figure.appendChild(caption);
+
             displayContainer.appendChild(figure);
         });
     }
 }
+
 
 /**
  * Renders filter buttons inside a given container to filter works by category.
@@ -76,9 +81,9 @@ export function displayWorks(elementSelection, imagesArray, isModal = false) {
  * @returns {void}
  */
 function displayFilter(elementSelection, filterArray, images) {
-    
+
     const filterContainer = document.querySelector(elementSelection);
-    filterContainer.innerHTML = "";
+    filterContainer.replaceChildren();
 
     function createFilterButton(label, onClick, isActive = false) {
         const button = document.createElement('button');
@@ -146,38 +151,55 @@ async function filterWorksByCategory(category, gallerySelector, images) {
  *
  */
 function adminMode(images) {
+    if (!sessionStorage.getItem("token")) return;
 
-    if (sessionStorage.getItem("token")) {
-        //Hide filter
-        document.querySelector(".filter-btn-container").style.display = "none";
+    // Hide filter
+    const filterContainer = document.querySelector(".filter-btn-container");
+    if (filterContainer) filterContainer.style.display = "none";
 
-        // Change login to logout
-        const logout = document.getElementById("loginBtn");
-        logout.innerText = "logout";
-
-        // add logout listener
+    // Change login to logout
+    const logout = document.getElementById("loginBtn");
+    
+        logout.textContent = "logout";
         logout.addEventListener("click", function (event) {
             event.preventDefault();
             clearSessionStorage('token');
             location.reload();
         });
-        //display top menu bar
-        const body = document.querySelector("body");
+    
 
-        const adminMenu = document.createElement("div");
-        adminMenu.className = "admin-menu";
+    // Display top menu bar
+    const body = document.querySelector("body");
 
-        const editMode = document.createElement("p");
-        editMode.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>Mode édition`;
+    const adminMenu = document.createElement("div");
+    adminMenu.className = "admin-menu";
+
+    const editMode = document.createElement("p");
+    const editIcon = document.createElement("i");
+    editIcon.classList.add("fa-regular", "fa-pen-to-square");
+    editMode.appendChild(editIcon);
+    editMode.appendChild(document.createTextNode(" Mode édition"));
+
+    body.insertAdjacentElement("afterbegin", adminMenu);
+    adminMenu.appendChild(editMode);
+
+    // Portfolio header
+    const portfolio = document.getElementById('portfolioHeader');
+    portfolio.replaceChildren();
+    portfolio.appendChild(document.createTextNode("Mes Projets "));
+
+    const editBtn = document.createElement("span");
+    editBtn.id = "editBtn";
+
+    const editBtnIcon = document.createElement("i");
+    editBtnIcon.classList.add("fa-regular", "fa-pen-to-square");
+    editBtn.appendChild(editBtnIcon);
+
+    editBtn.appendChild(document.createTextNode(" modifier"));
+    portfolio.appendChild(editBtn);
+
+    portfolio.style.marginBottom = "92px";
 
 
-        body.insertAdjacentElement("afterbegin", adminMenu);
-        adminMenu.insertAdjacentElement("afterbegin", editMode);
-
-        const editBtn = `<span id="editBtn"><i class="fa-regular fa-pen-to-square"></i> modifier</span>`;
-        const portfolio = document.getElementById('portfolioHeader');
-        portfolio.innerHTML = 'Mes Projets' + editBtn;
-        setTimeout(() => { modal(images) }, 100);
-
-    }
+    setTimeout(() => modal(images), 100);
 }
