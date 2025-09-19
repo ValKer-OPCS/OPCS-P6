@@ -26,15 +26,15 @@
 </header>
 <main>
 	<section id="login">
-		<h2>Log In</h2>
-		<form novalidate>
+		<h2 id="loginHeader">Log In</h2>
+		<form id="loginForm" novalidate>
 			<label for="email">Email</label>
 			<input type="email" name="email" id="email">
 			<label for="password">Mot de passe</label>
 			<input type="password" name="password" id="password">
 			<input type="submit" value="Se connecter" id="loginBtn">
 		</form>
-        <p><a href="#">Mot de passe oublié</a></p>
+        <p id="forgotPW"><a  href="#">Mot de passe oublié</a></p>
 		<div id="errorField"></div>
 	</section>
 </main>

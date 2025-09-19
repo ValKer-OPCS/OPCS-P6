@@ -1,5 +1,5 @@
-import  {postToLogin} from "../modules/fetcher.js";
-
+import { postToLogin } from "../modules/fetcher.js";
+import { startCountdown } from "./utils.js";
 
 /**
  * Attaches a submit event listener to the document that handles login form submissions.
@@ -12,6 +12,23 @@ import  {postToLogin} from "../modules/fetcher.js";
  * @returns {Promise<void>} A promise that resolves once the login submission process is complete.
  */
 async function loginSubmit() {
+    if (sessionStorage.getItem("token")) {
+        const loginForm = document.getElementById('loginForm');
+        const loginHeader = document.getElementById('loginHeader');
+        const forgotPW = document.getElementById('forgotPW');
+        const timerSpan = document.createElement('span');
+        loginForm.style.display ='none';
+        loginHeader.textContent = 'Vous êtes déjà connecté.';
+        loginHeader.style.textAlign = 'center';
+        forgotPW.textContent = 'Redirection dans ';
+        timerSpan.id = 'timer';
+        timerSpan.textContent = '5';
+        forgotPW.appendChild(timerSpan);
+        forgotPW.appendChild(document.createTextNode(' secondes'));
+
+
+        startCountdown('../index.html', 5);
+    }
     document.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -43,6 +60,10 @@ async function loginSubmit() {
         if (result.success) {
             window.location.replace("../index.html");
         } else {
+            if (result.message === "Ressource introuvable.") {
+                errorField.innerText = "Email ou mot de passe incorrect. Veuillez réessayer.";
+                return
+            }
             errorField.innerText = result.message;
         }
     });
