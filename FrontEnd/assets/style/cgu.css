@@ -81,7 +81,8 @@ a:link {
   color: #000;
 }
 a:hover {
-  color: #B1663C;
+  color: #000;
+  font-weight: 700;
 }
 
 h1 {
@@ -125,8 +126,9 @@ header {
   padding: 50px 150px 0px 150px;
   box-sizing: border-box;
 }
-header img:hover {
-  filter: invert(45%) sepia(66%) saturate(500%) hue-rotate(345deg) brightness(90%) contrast(85%);
+header img {
+  height: 20px;
+  width: 20px;
 }
 
 nav ul {

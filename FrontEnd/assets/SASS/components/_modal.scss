@@ -158,6 +158,9 @@ dialog#modal {
             #confirmDelete {
               background-color: rgb(133, 41, 41);
               color: #fff;
+              &:hover{
+                background-color: rgb(94, 29, 29);
+              }
             }
           }
         }
@@ -277,4 +280,7 @@ dialog#modal {
 
 #validateAdd {
   display: none;
+}
+::backdrop{
+background: rgba(0, 0, 0, 0.30);
 }
