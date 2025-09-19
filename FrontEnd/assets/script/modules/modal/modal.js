@@ -64,8 +64,8 @@ export function resetModal(images) {
     modalText.innerText = 'Galerie photo';
 
     // Empty dynamicaly loaded content
-    modalGallery.innerHTML = '';
-    modalAddForm.innerHTML = '';
+    modalGallery.replaceChildren();
+    modalAddForm.replaceChildren();
 
     // Display main gallery
     modalGallery.style.display = "grid";
@@ -94,17 +94,28 @@ export function resetModal(images) {
  */
 export function displayModalWorks(imagesArray) {
     const displayContainer = document.querySelector('.modalGallery');
-    displayContainer.innerHTML = '';
+    displayContainer.replaceChildren();
 
     imagesArray.forEach((work, index) => {
         const figure = document.createElement('figure');
-        figure.innerHTML = `
-            <img src="${work.imageUrl}" alt="${work.title}">
-            <span class="deleteButton"><i class="fa-solid fa-trash-can"></i></span>
-        `;
+
+        const img = document.createElement('img');
+        img.src = work.imageUrl;
+        img.alt = work.title;
+        figure.appendChild(img);
+
+        const span = document.createElement('span');
+        span.classList.add('deleteButton');
+
+        const icon = document.createElement('i');
+        icon.classList.add('fa-solid', 'fa-trash-can');
+        span.appendChild(icon);
+
+        figure.appendChild(span);
+
         displayContainer.appendChild(figure);
 
-        deleteWorksQuery(figure, work, imagesArray, index)
+        deleteWorksQuery(figure, work, imagesArray, index);
     });
 }
 
