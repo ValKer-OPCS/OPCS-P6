@@ -11,29 +11,82 @@ import { getModalElements, resetModal } from "./modal.js";
  * @returns {void}
  */
 export function injectFormHTML(container) {
-    container.innerHTML = `<form id="formAdd">
-        <div class="upload-box" id="dropZone">
-            <div class="placeholder">
-                <i class="fa-solid fa-image"></i>
-                <br>
-                <button id="uploadBtn" type="button">+ Ajouter photo</button>
-                <br>
-                <p id="inputTextField">jpg, png : 4mo max</p>
-            </div>
-            <img id="preview" class="preview" alt="Aperçu" style="display:none;"/>
-        </div>
-        <input type="file" id="fileInput" accept="image/png, image/jpeg" hidden>
-        <div class="img-submit-form">
-            <label for="title">Titre</label>
-            <input type="text" id="title" placeholder="Saisissez un titre">
-            <label for="category">Catégorie</label>
-            <div class="select-wrapper">
-                <select id="category"></select>
-            </div>
-        </div>
-        </form>
-    `;
+    container.replaceChildren(); // vide le container
+
+    const form = document.createElement('form');
+    form.id = 'formAdd';
+
+    // Upload box
+    const uploadBox = document.createElement('div');
+    uploadBox.className = 'upload-box';
+    uploadBox.id = 'dropZone';
+
+    const placeholder = document.createElement('div');
+    placeholder.className = 'placeholder';
+
+    const icon = document.createElement('i');
+    icon.classList.add('fa-solid', 'fa-image');
+    placeholder.appendChild(icon);
+    placeholder.appendChild(document.createElement('br'));
+
+    const uploadBtn = document.createElement('button');
+    uploadBtn.id = 'uploadBtn';
+    uploadBtn.type = 'button';
+    uploadBtn.textContent = '+ Ajouter photo';
+    placeholder.appendChild(uploadBtn);
+    placeholder.appendChild(document.createElement('br'));
+
+    const infoText = document.createElement('p');
+    infoText.id = 'inputTextField';
+    infoText.textContent = 'jpg, png : 4mo max';
+    placeholder.appendChild(infoText);
+
+    const preview = document.createElement('img');
+    preview.id = 'preview';
+    preview.className = 'preview';
+    preview.alt = 'Aperçu';
+    preview.style.display = 'none';
+
+    uploadBox.appendChild(placeholder);
+    uploadBox.appendChild(preview);
+
+    form.appendChild(uploadBox);
+
+    // File input
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.id = 'fileInput';
+    fileInput.accept = 'image/png, image/jpeg';
+    fileInput.hidden = true;
+    form.appendChild(fileInput);
+
+    // Text inputs
+    const imgSubmitForm = document.createElement('div');
+    imgSubmitForm.className = 'img-submit-form';
+
+    const titleLabel = document.createElement('label');
+    titleLabel.htmlFor = 'title';
+    titleLabel.textContent = 'Titre';
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.id = 'title';
+    titleInput.placeholder = 'Saisissez un titre';
+
+    const categoryLabel = document.createElement('label');
+    categoryLabel.htmlFor = 'category';
+    categoryLabel.textContent = 'Catégorie';
+    const selectWrapper = document.createElement('div');
+    selectWrapper.className = 'select-wrapper';
+    const select = document.createElement('select');
+    select.id = 'category';
+    selectWrapper.appendChild(select);
+
+    imgSubmitForm.append(titleLabel, titleInput, categoryLabel, selectWrapper);
+    form.appendChild(imgSubmitForm);
+
+    container.appendChild(form);
 }
+
 
 /**
  * Populates a category `<select>` element with options fetched from the backend.
