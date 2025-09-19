@@ -23,3 +23,18 @@ export function smoothScrollOnLoad(){
 export function clearSessionStorage(item) {
   sessionStorage.removeItem(item);
 }
+
+export function startCountdown(url, seconds) {
+  const timerElement = document.getElementById("timer");
+  timerElement.textContent = seconds;
+
+  const countdown = setInterval(() => {
+    seconds--;
+    timerElement.textContent = seconds;
+
+    if (seconds <= 0) {
+      clearInterval(countdown);
+      window.location.href = url;
+    }
+  }, 1000);
+}
