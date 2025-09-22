@@ -132,7 +132,7 @@ function setActiveButton(selectedBtn) {
  *
  * @returns {Promise<void>} A promise that resolves once the filtered works have been displayed.
  */
-async function filterWorksByCategory(category, gallerySelector, images) {
+function filterWorksByCategory(category, gallerySelector, images) {
     const filteredWorks = images.filter(work => work.category.name === category);
     displayWorks(gallerySelector, filteredWorks);
 }
